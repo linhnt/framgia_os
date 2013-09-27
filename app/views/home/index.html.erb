@@ -1,0 +1,15 @@
+<% if user_signed_in? %>
+Hello, <%= current_user.name %>! <%= link_to "Sign out", root_path %><br/>
+Balance: <%= current_user.amount %>VND<br/>
+<hr>
+ORDER NOW!!!<br/>
+<% @m_foods.each do |m_food| %>
+||--- <%= m_food.name %> ---||
+<%= select_tag "option", options_from_collection_for_select(m_food.m_food_options, "id", "name") %>
+<%= button_tag "Order", id: "#{m_food.id}" %><br/>
+<%= image_tag m_food.url, width: "300px" %><br/>
+Price: <%= m_food.price %> VND<br/><br/>
+<% end %>
+<% else %>
+Not signed in. <%= link_to "Sign in with Facebook here", root_path %>
+<% end %>

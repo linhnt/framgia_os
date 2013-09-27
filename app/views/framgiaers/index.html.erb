@@ -1,0 +1,26 @@
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Facebook</th>
+    <th>Balance</th>
+    <th>Action</th>
+  </tr>
+<% @users.each do |user| %>
+  <tr>
+    <td><%= user.name %></td>
+    <td><%= link_to user.name, user.facebook_link, target: "_target" %></td>
+    <td><%= user.amount %></td>
+    <td>
+      <%= text_field_tag "#{user.id}" %>
+      <%= link_to "Add", "#", id: "#{user.id}", method: :put %>
+    </td>
+  </tr>
+<% end %>
+</table>
+<script>
+$(function(){
+  $("input").change(function(){
+    $(this).siblings("a").attr("href","/framgiaers/"+$(this).attr("id")+"?money="+$(this).val());
+  });
+})
+</script>
