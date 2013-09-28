@@ -4,7 +4,7 @@ class CreateMFoods < ActiveRecord::Migration
       t.string :name
       t.string :url
       t.integer :price
-      t.boolean :visibility, default: true
+      t.boolean :visibility, default: 1
 
       t.timestamps
     end
