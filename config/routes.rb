@@ -3,5 +3,6 @@ FramgiaOs::Application.routes.draw do
   root to: "home#login"
   get "home/callback" => "home#callback"
   get "mypage" => "home#index"
-  resources :framgiaers
+  resources :framgiaers, only: [:index, :update]
+  resources :orders, only: [:create]
 end

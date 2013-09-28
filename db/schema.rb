@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130927084536) do
+ActiveRecord::Schema.define(version: 20130928075143) do
 
   create_table "m_food_options", force: true do |t|
     t.integer  "m_food_id"
@@ -25,6 +25,15 @@ ActiveRecord::Schema.define(version: 20130927084536) do
     t.string   "url"
     t.integer  "price"
     t.boolean  "visibility", default: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "orders", force: true do |t|
+    t.integer  "m_food_id"
+    t.integer  "m_food_option_id"
+    t.integer  "quantity"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

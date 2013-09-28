@@ -4,12 +4,28 @@ Balance: <%= current_user.amount %>VND<br/>
 <hr>
 ORDER NOW!!!<br/>
 <% @m_foods.each do |m_food| %>
-||--- <%= m_food.name %> ---||
-<%= select_tag "option", options_from_collection_for_select(m_food.m_food_options, "id", "name") %>
-<%= button_tag "Order", id: "#{m_food.id}" %><br/>
-<%= image_tag m_food.url, width: "300px" %><br/>
-Price: <%= m_food.price %> VND<br/><br/>
+  <div class = "food<%= m_food.id %>">
+  ||--- <%= m_food.name %> ---||
+  <%= select_tag "#{m_food.id}", options_from_collection_for_select(m_food.m_food_options, "id", "name") ,class: "food_option" %>
+  <%= select_tag "#{m_food.id}", options_for_select(1..10), class: "quantity" %>
+  <%= link_to "Order", "#", id: "#{m_food.id}", method: :post %>
+  <br/>
+  <%= image_tag m_food.url, width: "300px" %><br/>
+  Price: <%= m_food.price %> VND<br/><br/>
+</div>
 <% end %>
 <% else %>
 Not signed in. <%= link_to "Sign in with Facebook here", root_path %>
 <% end %>
+<script>
+  $(function(){
+    $("a").each(function(){
+      $(this).attr("href","/orders?m_food_id=" + $(this).attr("id") + "&m_food_option_id=" + $(this).siblings(".food_option").children("option:selected").val() + "&quantity=" + $(this).siblings(".quantity").children("option:selected").val());
+    })
+    $("select").change(function(){
+      $("a").each(function(){
+        $(this).attr("href","/orders?m_food_id=" + $(this).attr("id") + "&m_food_option_id=" + $(this).siblings(".food_option").children("option:selected").val() + "&quantity=" + $(this).siblings(".quantity").children("option:selected").val());
+      })
+    })
+  });
+</script>
