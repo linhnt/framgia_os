@@ -2,22 +2,31 @@
 ORDER NOW!!!<br/>
 <div class="order">
 <% @m_foods.each do |m_food| %>
+<% if current_user.is_admin? || m_food.visibility? %>
   <div class = "food<%= m_food.id %>">
   ||--- <%= m_food.name %> ---||
   <%= select_tag "#{m_food.id}", options_from_collection_for_select(m_food.m_food_options, "id", "name") ,class: "food_option" %>
   <%= select_tag "#{m_food.id}", options_for_select(1..10), class: "quantity" %>
   <%= link_to "Order", "#", id: "#{m_food.id}", method: :post, confirm: "Are you sure?", class: :order %>
+<% if current_user.is_admin? %>
+	<% if m_food.visibility? %>
+    <%= link_to "Disable", mypage_path(visible: "disable", food_id: m_food.id)  %>
+    <% else %>
+    <%= link_to "Enable", mypage_path(visible: "enable", food_id: m_food.id) %>
+    <% end %>
+<% end %>
   <br/>
 <% if current_user.is_admin? %>
 Current orders:
 <% m_food.m_food_options.each do |opt| %>
-<%= "#{opt.name}(#{Turn.last.orders.where(m_food_option_id: opt.id).sum(&:quantity)})" %>
+<%= "#{opt.name}(#{Order.where(state: 'init').where(m_food_option_id: opt.id).sum(&:quantity)})" %><br/>
 <% end %>
 <% end %>
   <br/>
   <%= image_tag m_food.url, width: "300px" %><br/>
   Price: <%= m_food.price %> VND<br/><br/>
 </div>
+<% end %>
 <% end %>
 <hr>
 TOTAL COST: <%= @orders.map{ |o| (o.m_food.price * o.quantity.to_i)}.inject{|sum, i| sum + i} %> VND<br/>
