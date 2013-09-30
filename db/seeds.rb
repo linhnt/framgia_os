@@ -1,3 +1,4 @@
+# coding: utf-8
 M::Food.destroy_all
 M::FoodOption.destroy_all
 f = M::Food.create(name: "Cà phê", price: 14000, url: "http://kienthucgiadinh.com.vn/data/article/mainimages/original/article_50698.jpg")
