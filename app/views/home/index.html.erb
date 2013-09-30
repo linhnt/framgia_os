@@ -1,18 +1,18 @@
 <% if user_signed_in? %>
-Hello, <%= current_user.name %>! <%= link_to "Sign out", root_path %><br/>
-Balance: <%= current_user.amount %>VND<br/>
-<hr>
 ORDER NOW!!!<br/>
+<div class="order">
 <% @m_foods.each do |m_food| %>
   <div class = "food<%= m_food.id %>">
   ||--- <%= m_food.name %> ---||
   <%= select_tag "#{m_food.id}", options_from_collection_for_select(m_food.m_food_options, "id", "name") ,class: "food_option" %>
   <%= select_tag "#{m_food.id}", options_for_select(1..10), class: "quantity" %>
-  <%= link_to "Order", "#", id: "#{m_food.id}", method: :post, confirm: "Are you sure?" %>
+  <%= link_to "Order", "#", id: "#{m_food.id}", method: :post, confirm: "Are you sure?", class: :order %>
   <br/>
+<% if current_user.is_admin? %>
 Current orders:
 <% m_food.m_food_options.each do |opt| %>
 <%= "#{opt.name}(#{Turn.last.orders.where(m_food_option_id: opt.id).sum(&:quantity)})" %>
+<% end %>
 <% end %>
   <br/>
   <%= image_tag m_food.url, width: "300px" %><br/>
@@ -20,23 +20,59 @@ Current orders:
 </div>
 <% end %>
 <hr>
-!!!Current turn: <%= Turn.last.des %>!!!<br/>
-TOTAL COST: <%= Turn.last.orders.map{ |o| (o.m_food.price * o.quantity.to_i)}.inject{|sum, i| sum + i} %><br/>
+TOTAL COST: <%= @orders.map{ |o| (o.m_food.price * o.quantity.to_i)}.inject{|sum, i| sum + i} %> VND<br/>
+<table class="table table-bordered table-striped">
+	<tr>
+	  <th>Customer Name</th>
+	  <th>Food Name</th>
+	  <th>Type</th>
+	  <th>Price</th>
+	  <th>Quantity</th>
+	  <th>Action</th>
+	  <th>Order at</th>
+	</tr>
 <% @orders.each do |order| %>
-  <%= "--- #{order.m_food.name}-#{order.m_food_option.name}-#{order.user.name}-#{order.quantity}" %><br/>
-<% end %>
+    <tr>
+      <td><%= order.user.name %></td>
+      <td><%= order.m_food.name %></td>
+      <td><%= order.m_food_option.name %></td>
+      <td><%= order.m_food.price %></td>
+      <td><%= order.quantity %></td>
+      <td>
+      	<% if current_user.is_admin? || (current_user.orders.include? order) %>
+	      	<%= link_to order_path(order), method: :delete, confirm: "Are you sure?" do %>
+	  			<i class="icon-trash"></i>
+	  		<% end %>
+  		<% end %>
+      </td> 
+      <td><%= order.created_at.strftime("%Y/%m/%d %H:%M") %></td>
+    </tr>
+<% end -%>
+	<tr>
+	  <td></td>
+	  <td></td>
+	  <td></td>
+	  <td></td>
+	  <td></td>
+	  <td>Total</td>
+	  <td><%= @orders.map{ |o| (o.m_food.price * o.quantity.to_i)}.inject{|sum, i| sum + i} %>VND</td>
+	</tr>
+  </table>
+</div>
 <% else %>
 Not signed in. <%= link_to "Sign in with Facebook here", root_path %>
 <% end %>
+
 <script>
   $(function(){
-    $("a").each(function(){
+    $("a.order").each(function(){
       $(this).attr("href","/orders?m_food_id=" + $(this).attr("id") + "&m_food_option_id=" + $(this).siblings(".food_option").children("option:selected").val() + "&quantity=" + $(this).siblings(".quantity").children("option:selected").val());
     })
     $("select").change(function(){
-      $("a").each(function(){
+      $("a.order").each(function(){
         $(this).attr("href","/orders?m_food_id=" + $(this).attr("id") + "&m_food_option_id=" + $(this).siblings(".food_option").children("option:selected").val() + "&quantity=" + $(this).siblings(".quantity").children("option:selected").val());
       })
     })
   });
 </script>
+

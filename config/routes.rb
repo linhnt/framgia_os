@@ -4,5 +4,5 @@ FramgiaOs::Application.routes.draw do
   get "home/callback" => "home#callback"
   get "mypage" => "home#index"
   resources :framgiaers, only: [:index, :update]
-  resources :orders, only: [:create]
+  resources :orders, only: [:create, :index, :destroy]
 end

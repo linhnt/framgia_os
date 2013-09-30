@@ -2,6 +2,11 @@ class FramgiaersController < ApplicationController
   before_filter :checking_user
   def index
     @users = User.all
+    if params[:apply] == "deliever"
+      Order.where(state: "init").all.each do |order|
+        order.deliever!
+      end
+    end
   end
 
   def update

@@ -1,3 +1,3 @@
-APP_ID= "342891675847555"
-APP_SECRET= "191e04db0e0a7af8ad95683fac81ecf9"
-SITE_URL = "http://framgia-osx.herokuapp.com/"
+APP_ID= "209668532526742"
+APP_SECRET= "dc463bb6ec23db385f4896c2ee438c52"
+SITE_URL = "http://localhost:3000"
