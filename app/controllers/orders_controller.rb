@@ -19,9 +19,10 @@ class OrdersController < ApplicationController
   end
   
   def destroy
-    order = current_user.orders.find(params[:id]).destroy
-    current_user.amount += order.quantity.to_i * order.m_food.price.to_i
-    current_user.save
+    order = Order.find(params[:id]).destroy
+    user = order.user
+    user.amount += order.quantity.to_i * order.m_food.price.to_i
+    user.save
     redirect_to mypage_path
   end
 end
