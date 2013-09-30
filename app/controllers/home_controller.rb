@@ -2,8 +2,12 @@ class HomeController < ApplicationController
   protect_from_forgery
 
   def index
-    @m_foods = M::Food.visible
+    @m_foods = M::Food.all
     @orders = Order.where(state: "init").order("id desc").all
+    if params[:visible].present?
+      visible = params[:visible] == "enable" ? true : false
+      M::Food.find(params[:food_id]).update_attributes(visibility: visible)
+    end
   end
 
   def login
