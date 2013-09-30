@@ -1,4 +1,9 @@
 class OrdersController < ApplicationController
+  
+  def index
+    redirect_to root_path unless user_signed_in?
+  end
+  
   def create
     begin
       Order.create(user_id: current_user.id,
@@ -10,6 +15,14 @@ class OrdersController < ApplicationController
       current_user.update_attributes(amount: (current_amount - now_price))
     rescue
     end
+    redirect_to mypage_path
+  end
+  
+  def destroy
+    order = Order.find(params[:id]).destroy
+    user = order.user
+    user.amount += order.quantity.to_i * order.m_food.price.to_i
+    user.save
     redirect_to mypage_path
   end
 end

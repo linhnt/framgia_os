@@ -3,7 +3,7 @@ class HomeController < ApplicationController
 
   def index
     @m_foods = M::Food.visible
-    @orders = Turn.last.orders
+    @orders = Order.where(state: "init").order("id desc").all
   end
 
   def login
@@ -26,7 +26,9 @@ class HomeController < ApplicationController
     @api = Koala::Facebook::API.new(session[:access_token])
     begin
       data = @api.get_object("me")
+      avatar = @api.get_picture(data["id"])
       @user = User.check_user data
+      @user.update_attributes(avatar: avatar) unless @user.avatar
       sign_in @user
       redirect_to mypage_path
     rescue Exception=>ex

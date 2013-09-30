@@ -1,14 +1,16 @@
 source "https://rubygems.org"
 
 gem "rails", "4.0.0"
+gem 'bootstrap-sass'
 gem "koala"
-gem "sqlite3"
-gem "sass-rails", "4.0.0"
-gem "uglifier", ">= 1.3.0"
-gem "coffee-rails", "4.0.0"
+gem "sass-rails"
+gem "uglifier"
+gem "coffee-rails"
 gem "jquery-rails"
 gem "turbolinks"
-gem "jbuilder", "~> 1.2"
+gem "jbuilder"
+gem "therubyracer"
+gem "state_machine"
 group :doc do
   gem "sdoc", require: false
 end
@@ -21,3 +23,10 @@ gem "better_errors"
 gem "binding_of_caller"
 gem "rails-erd"
 gem "devise"
+group :production do
+  gem 'pg'
+end
+group :development do
+  gem 'mysql2'
+  gem 'rspec-rails'
+end
