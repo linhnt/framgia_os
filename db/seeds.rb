@@ -1,3 +1,4 @@
+# coding: utf-8
 M::Food.destroy_all
 M::FoodOption.destroy_all
 Turn.destroy_all
