@@ -5,6 +5,7 @@ class CreateOrders < ActiveRecord::Migration
       t.integer :m_food_option_id
       t.integer :quantity
       t.integer :user_id
+      t.integer :turn_id
 
       t.timestamps
     end

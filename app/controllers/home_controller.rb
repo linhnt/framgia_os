@@ -3,6 +3,7 @@ class HomeController < ApplicationController
 
   def index
     @m_foods = M::Food.visible
+    @orders = Turn.last.orders
   end
 
   def login

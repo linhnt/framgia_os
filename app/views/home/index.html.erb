@@ -8,11 +8,22 @@ ORDER NOW!!!<br/>
   ||--- <%= m_food.name %> ---||
   <%= select_tag "#{m_food.id}", options_from_collection_for_select(m_food.m_food_options, "id", "name") ,class: "food_option" %>
   <%= select_tag "#{m_food.id}", options_for_select(1..10), class: "quantity" %>
-  <%= link_to "Order", "#", id: "#{m_food.id}", method: :post %>
+  <%= link_to "Order", "#", id: "#{m_food.id}", method: :post, confirm: "Are you sure?" %>
+  <br/>
+Current orders:
+<% m_food.m_food_options.each do |opt| %>
+<%= "#{opt.name}(#{Turn.last.orders.where(m_food_option_id: opt.id).sum(&:quantity)})" %>
+<% end %>
   <br/>
   <%= image_tag m_food.url, width: "300px" %><br/>
   Price: <%= m_food.price %> VND<br/><br/>
 </div>
+<% end %>
+<hr>
+!!!Current turn: <%= Turn.last.des %>!!!<br/>
+TOTAL COST: <%= Turn.last.orders.map{ |o| (o.m_food.price * o.quantity.to_i)}.inject{|sum, i| sum + i} %><br/>
+<% @orders.each do |order| %>
+  <%= "--- #{order.m_food.name}-#{order.m_food_option.name}-#{order.user.name}-#{order.quantity}" %><br/>
 <% end %>
 <% else %>
 Not signed in. <%= link_to "Sign in with Facebook here", root_path %>
