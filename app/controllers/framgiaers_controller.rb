@@ -7,6 +7,9 @@ class FramgiaersController < ApplicationController
         order.deliever!
       end
     end
+    if params[:show] == "show_orders"
+      render :show_orders
+    end
   end
 
   def update
