@@ -6,9 +6,13 @@ class Order < ActiveRecord::Base
   state_machine :state, initial: :init do
     state :delievery
     state :init
+    state :paid
 
     event :deliever! do
       transition :init => :delievery
+    end
+    event :paid! do
+      transition :delievery => :paid
     end
   end
 end

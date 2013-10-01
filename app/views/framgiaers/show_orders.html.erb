@@ -1,4 +1,4 @@
-<h1>All your order</h1>
+<h1>Delievery order</h1>
 <table class="table table-bordered table-striped">
 	<tr>
 	  <th>User Name</th>
@@ -7,6 +7,7 @@
 	  <th>Price</th>
 	  <th>Quantity</th>
 	  <th>Status</th>
+	  <th>Action</th>
 	  <th>Order at</th>
 	</tr>
 <% Order.where(state: "delievery").each do |order| %>
@@ -16,7 +17,10 @@
       <td><%= order.m_food_option.name %></td>
       <td><%= order.m_food.price %></td>
       <td><%= order.quantity %></td>
-      <td><span class="label label-<%= order.state == 'init' ? 'warning' : 'success' %>"><%= order.state == "init" ? "Waiting" : "Done" %></span></td> 
+      <% if order.state == "delievery" %>
+      	<td><span class="label label-important">Delievery</span></td>
+      <% end %>
+      <td><%= link_to "Paid", framgiaers_path(apply: "paid", order_id: order.id), class: "btn btn-success" %></td>
       <td><%= order.created_at.strftime("%Y/%m/%d %H:%M") %></td>
     </tr>
 <% end -%>
@@ -26,7 +30,44 @@
 	  <td></td>
 	  <td></td>
 	  <td></td>
+	  <td></td>
 	  <td>Total</td>
-	  <td><%= Order.where(user_id: current_user.id).map{ |o| (o.m_food.price * o.quantity.to_i)}.inject{|sum, i| sum + i} %>VND</td>
+	  <td><%= Order.where(state: "delievery").map{ |o| (o.m_food.price * o.quantity.to_i)}.inject{|sum, i| sum + i} %>VND</td>
+	</tr>
+  </table>
+  
+<h1>Paid order</h1>
+<table class="table table-bordered table-striped">
+	<tr>
+	  <th>User Name</th>
+	  <th>Name</th>
+	  <th>Type</th>
+	  <th>Price</th>
+	  <th>Quantity</th>
+	  <th>Status</th>
+	  <th>Action</th>
+	  <th>Order at</th>
+	</tr>
+<% Order.where(state: "paid").each do |order| %>
+    <tr>
+      <td><%= order.user.name %></td>
+      <td><%= order.m_food.name %></td>
+      <td><%= order.m_food_option.name %></td>
+      <td><%= order.m_food.price %></td>
+      <td><%= order.quantity %></td>
+	  <td><span class="label label-success">Paid</span></td>
+      <td><%= link_to "Paid", framgiaers_path(apply: "paid", order_id: order.id), class: "btn btn-success" %></td>
+      <td><%= order.created_at.strftime("%Y/%m/%d %H:%M") %></td>
+    </tr>
+<% end -%>
+	<tr>
+	  <td></td>
+	  <td></td>
+	  <td></td>
+	  <td></td>
+	  <td></td>
+	  <td></td>
+	  <td>Total</td>
+	  <td><%= Order.where(state: "paid").map{ |o| (o.m_food.price * o.quantity.to_i)}.inject{|sum, i| sum + i} %>VND</td>
 	</tr>
   </table>

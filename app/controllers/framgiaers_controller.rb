@@ -8,6 +8,10 @@ class FramgiaersController < ApplicationController
       end
       redirect_to mypage_path
     end
+    if params[:apply] == "paid"
+      Order.find(params[:order_id]).paid!
+      redirect_to framgiaers_path(show: "show_orders")
+    end
     if params[:show] == "show_orders"
       render :show_orders
     end
