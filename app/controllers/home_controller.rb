@@ -11,8 +11,11 @@ class HomeController < ApplicationController
   end
 
   def login
-    if user_signed_in?
+    if params[:target] == "sign_out"
       sign_out current_user
+    end
+    if user_signed_in?
+      redirect_to mypage_path
     end
     session[:oauth] = Koala::Facebook::OAuth.new(APP_ID, APP_SECRET, SITE_URL + '/home/callback')
     @auth_url =  session[:oauth].url_for_oauth_code(:permissions=>"read_stream")

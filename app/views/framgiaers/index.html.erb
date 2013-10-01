@@ -1,19 +1,17 @@
-<%= link_to "Apply All Order", framgiaers_path(apply: "deliever") %>
-<table>
+<%= link_to "Apply All Order", framgiaers_path(apply: "deliever"), class: "btn btn-success" %>
+<table class="table table-bordered table-striped">
   <tr>
     <th>Name</th>
-    <th>Facebook</th>
     <th>Balance</th>
     <th>Action</th>
   </tr>
 <% @users.each do |user| %>
   <tr>
-    <td><%= user.name %></td>
     <td><%= link_to user.name, user.facebook_link, target: "_target" %></td>
-    <td><%= user.amount %></td>
+    <td><%= user.amount %>VND</td>
     <td>
-      <%= text_field_tag "#{user.id}" %>
-      <%= link_to "Add", "#", id: "#{user.id}", method: :put %>
+      <%= text_field_tag "#{user.id}", "", style: "margin: 0px" %>
+      <%= link_to "Add", "#", id: "#{user.id}", method: :put, class: "btn btn-success" %>
     </td>
   </tr>
 <% end %>

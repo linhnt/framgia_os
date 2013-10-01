@@ -6,6 +6,7 @@ class FramgiaersController < ApplicationController
       Order.where(state: "init").all.each do |order|
         order.deliever!
       end
+      redirect_to mypage_path
     end
     if params[:show] == "show_orders"
       render :show_orders

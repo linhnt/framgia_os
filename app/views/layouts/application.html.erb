@@ -28,11 +28,16 @@
 	                <li>
 	                	<%= link_to orders_path do %>
 	                	 Balance: <%= current_user.amount %>VND
-	                	<% end %> 
+	                	<% end %>
 	                </li>
+<% if current_user.is_admin? %>
+                  <li>
+                    <%= link_to "Framgiaers page", framgiaers_path %>
+                  </li>
+<% end %>
 	                <li class="divider"></li>
 	                <li>
-	               	  <%= link_to "Sign out", "/" %>
+	               	  <%= link_to "Sign out", root_path(target: "sign_out")%>
 	                </li>
 	              </ul>
 	            </li>
