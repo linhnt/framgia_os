@@ -25,9 +25,3 @@ test:
   username: root
   password: "123456"
   socket: /var/run/mysqld/mysqld.sock
-
-production:
-  adapter: sqlite3
-  database: db/production.sqlite3
-  pool: 5
-  timeout: 5000

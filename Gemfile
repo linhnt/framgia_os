@@ -23,9 +23,6 @@ gem "better_errors"
 gem "binding_of_caller"
 gem "rails-erd"
 gem "devise"
-group :production do
-  gem 'pg'
-end
 group :development do
   gem 'mysql2'
   gem 'rspec-rails'
