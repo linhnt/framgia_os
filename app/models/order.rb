@@ -15,4 +15,8 @@ class Order < ActiveRecord::Base
       transition :delievery => :paid
     end
   end
+  
+  scope :order_today, -> do
+    where("DATE(created_at) = ?", Date.today)
+  end
 end

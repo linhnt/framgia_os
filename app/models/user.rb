@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   validates :facebook_id, presence: true
   
   has_many :orders
+  has_many :auto_orders
 
   class << self
     def check_user data
