@@ -6,7 +6,25 @@ class HomeController < ApplicationController
     @orders = Order.where(state: "init").order("id desc").all
     if params[:visible].present?
       visible = params[:visible] == "enable" ? true : false
-      M::Food.find(params[:food_id]).update_attributes(visibility: visible)
+      food = M::Food.find(params[:food_id])
+      food.update_attributes(visibility: visible)
+      if visible == true
+        AutoOrder.all.each do |auto_order|
+          if auto_order.user.orders.where(m_food_id: params[:food_id], m_food_option_id: auto_order.m_food_option.id)
+            .order_today.count == 0 && food.m_food_options.pluck(:id).include?(auto_order.m_food_option.id)
+            begin
+              Order.create(user_id: auto_order.user.id,
+                m_food_id: params[:food_id],
+                m_food_option_id: auto_order.m_food_option.id,
+                quantity: 1, turn_id: Turn.last.id)
+              current_amount = auto_order.user.amount
+              now_price = M::Food.find(params[:food_id]).price
+              auto_order.user.update_attributes(amount: (current_amount - now_price))
+            rescue
+            end
+          end
+        end
+      end
     end
   end
 

@@ -11,7 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130930061543) do
+ActiveRecord::Schema.define(version: 20131224024045) do
+
+  create_table "auto_orders", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "m_food_id"
+    t.integer  "m_food_option_id"
+    t.string   "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "m_food_options", force: true do |t|
     t.integer  "m_food_id"

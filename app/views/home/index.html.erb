@@ -19,6 +19,22 @@
           <%= link_to "Enable", mypage_path(visible: "enable", food_id: m_food.id), class: "btn btn-success" %>
     <% end %>
 <% end %>
+          <div>
+            <table>
+<% m_food.m_food_options.each do |opt| %>
+              <tr>
+                <td><%= opt.name %></td>
+                <td>
+<%   if auto_order = current_user.auto_orders.where(m_food_id: m_food.id).where(m_food_option_id: opt.id).first %>
+                  <%= link_to "Delete", auto_order_path(auto_order), method: :delete, confirm: "Are you sure?", class: "btn btn-error" %>
+<%   else %>
+                  <%= link_to "Auto Order", auto_orders_path(visible: "enable", m_food_id: m_food.id, m_food_option_id: opt.id), method: :post, class: "btn btn-success" %>
+<%   end %>
+                </td>
+              </tr>
+<% end %>
+            </table>
+          </div>
         </div>
     </div>
   <br/>
