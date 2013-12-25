@@ -17,6 +17,6 @@ class Order < ActiveRecord::Base
   end
   
   scope :order_today, -> do
-    where("DATE(created_at) = ?", Date.today)
+    where("DATE(created_at) = ?", (Time.now + 7.hours).to_date)
   end
 end
