@@ -23,6 +23,7 @@ gem "better_errors"
 gem "binding_of_caller"
 gem "rails-erd"
 gem "devise"
+gem "websocket-rails"
 group :development do
   gem 'mysql2'
   gem 'rspec-rails'
