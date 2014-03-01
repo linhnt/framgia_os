@@ -4,6 +4,7 @@
 <strong>TODAY's discount</strong>
 Sorry! No discount for today!
 </div>
+<div id="__current_user" data-user="<%= current_user.id %>"></div>
 <div class="order">
 <% @m_foods.each do |m_food| %>
 <% if current_user.is_admin? || m_food.visibility? %>
@@ -108,6 +109,10 @@ TOTAL COST: <%= @orders.map{ |o| (o.m_food.price * o.quantity.to_i)}.inject{|sum
 	</tr>
   </table>
 </div>
+<div>
+  <input id="send" type="button" value="Test Websocket">
+  <input type="button" value="Test Broadcast Websocket" onclick="test_broadcast_message();">
+</div>
 <% else %>
 Not signed in. <%= link_to "Sign in with Facebook here", root_path %>
 <% end %>
@@ -122,6 +127,20 @@ Not signed in. <%= link_to "Sign in with Facebook here", root_path %>
         $(this).attr("href","/orders?m_food_id=" + $(this).attr("id") + "&m_food_option_id=" + $(this).siblings(".food_option").children("option:selected").val() + "&quantity=" + $(this).siblings(".quantity").children("option:selected").val());
       })
     })
+    new Chat.Controller('localhost:3000/websocket', true);
   });
+  function test_broadcast_message() {
+    $.ajax({
+    type: "POST",
+    dataType: "json",
+    data: {
+      user_id: $('#__current_user').data('user') + '', 
+      msg_body: "test broadcast message"
+    },
+    url: "/test_broadcast_message",
+    success: function(data){
+      
+    }
+  }); 
+  }
 </script>
-
