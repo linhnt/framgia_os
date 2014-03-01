@@ -1,5 +1,9 @@
 <% if user_signed_in? %>
   <div class="page-header"><h1>LET'S ORDER EVERYTHING!</h1></div>
+  <div class="alert alert-success">
+<strong>TODAY's discount</strong>
+Sorry! No discount for today!
+</div>
 <div class="order">
 <% @m_foods.each do |m_food| %>
 <% if current_user.is_admin? || m_food.visibility? %>
@@ -21,6 +25,7 @@
 <% end %>
           <div>
             <table>
+<% unless m_food.id == 5 %>
 <% m_food.m_food_options.each do |opt| %>
               <tr>
                 <td><%= opt.name %></td>
@@ -32,6 +37,7 @@
 <%   end %>
                 </td>
               </tr>
+<% end %>
 <% end %>
             </table>
           </div>
