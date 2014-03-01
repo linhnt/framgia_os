@@ -1,0 +1,6 @@
+<%= @product_click.food.try(:name) %> <br>
+<%= @product_click.food.try(:price) %> VND
+
+<%= form_for @product_click do |f| %>
+  <%= f.submit value: "Click" %>
+<% end %>

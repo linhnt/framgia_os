@@ -11,13 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131224024045) do
+ActiveRecord::Schema.define(version: 20140301072310) do
 
   create_table "auto_orders", force: true do |t|
     t.integer  "user_id"
     t.integer  "m_food_id"
     t.integer  "m_food_option_id"
     t.string   "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "history_clicks", force: true do |t|
+    t.integer  "product_click_id"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -47,6 +54,13 @@ ActiveRecord::Schema.define(version: 20131224024045) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "state",            default: "init"
+  end
+
+  create_table "product_clicks", force: true do |t|
+    t.integer  "product_id"
+    t.integer  "price"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "turns", force: true do |t|
