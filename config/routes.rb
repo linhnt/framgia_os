@@ -6,4 +6,5 @@ FramgiaOs::Application.routes.draw do
   resources :framgiaers, only: [:index, :update]
   resources :auto_orders, only: [:create, :destroy]
   resources :orders, only: [:create, :index, :destroy]
+  resources :product_clicks
 end
