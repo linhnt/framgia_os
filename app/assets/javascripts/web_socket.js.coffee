@@ -17,10 +17,15 @@ class Chat.Controller
 
   bindEvents: =>
     @dispatcher.bind 'new_message', @newMessage
-    $('#send').on 'click', @sendMessage
+    @dispatcher.bind 'player2_joined', @newPlayer
+    # $('#send').on 'click', @sendMessage
 
   newMessage: (message) =>
     console.log('newMessage')
+    #@appendMessage message
+
+  newPlayer: (message) =>
+    set_player(2,message.name)
     #@appendMessage message
 
   sendMessage: (event) =>
@@ -34,7 +39,8 @@ class Chat.Controller
     $('#__histories').prepend messageTemplate
 
   createGuestUser: =>
-    console.log('createGuestUser');
+    console.log('createGuestUser')
+    
     @user = new Chat.User($('#__current_user').data('user') + "")
     @dispatcher.trigger 'new_user', @user.serialize()
 

@@ -1,0 +1,4 @@
+<h1>List avaiable game!</h1>
+<% @matrixgames.each do |game| %>
+<%= link_to game.id, matrixgame_path(game) %><br/>
+<% end %>
