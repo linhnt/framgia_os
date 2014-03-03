@@ -65,10 +65,21 @@ class HomeController < ApplicationController
     end
   end
 
+  def test_message
+    binding.pry
+    event = WebsocketRails::Event.new(:new_message, data: {
+      user_name:  current_user.id, 
+      received:   Time.now.to_s(:short), 
+      msg_body:   ERB::Util.html_escape("test") 
+    })
+    WebsocketRails.users[current_user.id.to_s].trigger event
+    render nothing: true
+  end
+
   def test_broadcast_message
     WebsocketRails.users.each do |connection|
       event = WebsocketRails::Event.new(:new_message, data: {
-        user_id:  current_user.id, 
+        user_name:  current_user.id, 
         received:   Time.now.to_s(:short), 
         msg_body:   ERB::Util.html_escape("test") 
       })
