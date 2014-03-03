@@ -11,7 +11,7 @@ class WebSocketController < WebsocketRails::BaseController
     logger.info "------------new_message----------"
     #user_msg :new_message, message[:msg_body].dup
     broadcast_message :new_message, { 
-      user_id:  message[:user_id], 
+      user_name:  message[:user_name], 
       received:   Time.now.to_s(:short), 
       msg_body:   ERB::Util.html_escape(message[:msg_body].dup) 
     }
@@ -20,9 +20,9 @@ class WebSocketController < WebsocketRails::BaseController
   def new_user
     logger.info "------------------new_user--------------"
     #logger.info "user_id: " + message[:user_id].to_s + "----"
-    #connection_store[:user] = { user_name: message[:user_id] }
-    user_msg :new_message, "add new user"
-    broadcast_user_list
+    connection_store[:user] = { user_name: message[:user_name] }
+    #user_msg :new_message, "add new user"
+    #broadcast_user_list
   end
 
   def change_username

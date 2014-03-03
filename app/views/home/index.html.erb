@@ -111,6 +111,7 @@ TOTAL COST: <%= @orders.map{ |o| (o.m_food.price * o.quantity.to_i)}.inject{|sum
 </div>
 <div>
   <input id="send" type="button" value="Test Websocket">
+  <input type="button" value="Test Message" onclick="test_message();">
   <input type="button" value="Test Broadcast Websocket" onclick="test_broadcast_message();">
 </div>
 <% else %>
@@ -131,16 +132,30 @@ Not signed in. <%= link_to "Sign in with Facebook here", root_path %>
   });
   function test_broadcast_message() {
     $.ajax({
-    type: "POST",
-    dataType: "json",
-    data: {
-      user_id: $('#__current_user').data('user') + '', 
-      msg_body: "test broadcast message"
-    },
-    url: "/test_broadcast_message",
-    success: function(data){
-      
-    }
-  }); 
+      type: "GET",
+      dataType: "json",
+      data: {
+        user_name: $('#__current_user').data('user') + '', 
+        msg_body: "test broadcast message"
+      },
+      url: "/test_broadcast_message",
+      success: function(data){
+        
+      }
+    }); 
+  }
+  function test_message() {
+      $.ajax({
+      type: "GET",
+      dataType: "json",
+      data: {
+        user_name: $('#__current_user').data('user') + '', 
+        msg_body: "test broadcast message"
+      },
+      url: "/test_message",
+      success: function(data){
+        
+      }
+    }); 
   }
 </script>

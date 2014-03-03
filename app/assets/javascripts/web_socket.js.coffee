@@ -3,6 +3,10 @@
 
 window.Chat = {}
 
+class Chat.User
+  constructor: (@user_name) ->
+  serialize: => { user_name: @user_name }
+
 class Chat.Controller
 
   constructor: (url,useWebSockets) ->
@@ -23,7 +27,7 @@ class Chat.Controller
     console.log('sendMessage')
     event.preventDefault()
     message = "test send websocket"
-    @dispatcher.trigger 'new_message', {user_id: $('#__current_user').data('user') + '', msg_body: message}
+    @dispatcher.trigger 'new_message', {user_name: @user.user_name, msg_body: message}
 
   appendMessage: (message) ->
     messageTemplate = @template(message)
@@ -31,7 +35,8 @@ class Chat.Controller
 
   createGuestUser: =>
     console.log('createGuestUser');
-    @dispatcher.trigger 'new_user', { user_id: $('#__current_user').data('user') }
+    @user = new Chat.User($('#__current_user').data('user') + "")
+    @dispatcher.trigger 'new_user', @user.serialize()
 
   template: (message) ->
     html =
