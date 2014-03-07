@@ -20,7 +20,7 @@ class WebSocketController < WebsocketRails::BaseController
   def new_user
     logger.info "------------------new_user--------------"
     #logger.info "user_id: " + message[:user_id].to_s + "----"
-    connection_store[:user] = { user_name: message[:user_name] }
+    #connection_store[:user] = { user_name: message[:user_name] }
     #user_msg :new_message, "add new user"
     #broadcast_user_list
   end

@@ -1,0 +1,36 @@
+jQuery ->
+  window.chatController = new Chat.Controller("<%= SITE_URL %>/websocket", true);
+
+window.Chat = {}
+
+class Chat.User
+  constructor: (@user_name) ->
+  serialize: => { user_name: @user_name }
+
+class Chat.Controller
+
+  constructor: (url,useWebSockets) ->
+    @dispatcher = new WebSocketRails(url,useWebSockets)
+    console.log('connect')
+    @dispatcher.on_open = @subscribeChannel 
+    @bindEvents()
+
+  bindEvents: =>
+    @dispatcher.bind 'new_message', @newMessage
+    $('#send').on 'click', @sendMessage
+
+  newMessage: (message) =>
+    console.log('newMessage')
+
+  sendMessage: (event) =>
+    console.log('sendMessage')
+    event.preventDefault()
+    message = "test send websocket"
+    @dispatcher.trigger 'new_message', {user_name: @user.user_name, msg_body: message}
+
+  subscribeChannel: =>
+    channel = @dispatcher.subscribe('matrix');
+    channel.bind('new', @channelMessage)
+
+  channelMessage: (message) =>
+    console.log('channel event received: ' + message)

@@ -66,13 +66,13 @@ class HomeController < ApplicationController
   end
 
   def test_message
-    binding.pry
     event = WebsocketRails::Event.new(:new_message, data: {
       user_name:  current_user.id, 
       received:   Time.now.to_s(:short), 
       msg_body:   ERB::Util.html_escape("test") 
     })
-    WebsocketRails.users[current_user.id.to_s].trigger event
+    #WebsocketRails.users[current_user.id.to_s].trigger event
+    WebsocketRails[:matrix].trigger(:new, "test")
     render nothing: true
   end
 
