@@ -14,12 +14,7 @@ class MatrixgamesController < ApplicationController
       @matrixgame.user2_id = current_user.id
       @matrixgame.save
       @role = 2
-      event = WebsocketRails::Event.new(:player2_joined, data: {
-      user_name:  current_user.id, 
-      name:  current_user.name
-    })
-    binding.pry
-    WebsocketRails.users[@matrixgame.user1_id.to_s].trigger event
+      WebsocketRails['1'].trigger :new, 'test'
     else
       @role = 0
     end

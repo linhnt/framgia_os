@@ -3,6 +3,9 @@
 <%= javascript_include_tag "matrixgame/kinetic-v5.0.1.min" %>
 <%= javascript_include_tag "matrixgame/gameobjects" %>
 <script>
+$(document).ready(function() {
+window.chatController = new Chat.Controller("<%= SITE_URL %>/websocket", true);
+});
   var STAGEWIDTH = 900;
   var STAGEHEIGHT = 600;
   var user1 = false;

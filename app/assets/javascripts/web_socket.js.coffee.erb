@@ -1,11 +1,7 @@
 jQuery ->
-  window.chatController = new Chat.Controller("<%= SITE_URL %>/websocket", true);
+  # window.chatController = new Chat.Controller("<%= SITE_URL %>/websocket", true);
 
 window.Chat = {}
-
-class Chat.User
-  constructor: (@user_name) ->
-  serialize: => { user_name: @user_name }
 
 class Chat.Controller
 
@@ -28,8 +24,8 @@ class Chat.Controller
     message = "test send websocket"
     @dispatcher.trigger 'new_message', {user_name: @user.user_name, msg_body: message}
 
-  subscribeChannel: =>
-    channel = @dispatcher.subscribe('matrix');
+  subscribeChannel: (message) =>
+    channel = @dispatcher.subscribe('1');
     channel.bind('new', @channelMessage)
 
   channelMessage: (message) =>
