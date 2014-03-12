@@ -5,6 +5,8 @@ FramgiaOs::Application.routes.draw do
   get "mypage" => "home#index"
   get "test_broadcast_message" => "home#test_broadcast_message"
   get "test_message" => "home#test_message"
+  get "next_turn" => "matrixgames#next_turn"
+  get "draw_from_socket" => "matrixgames#draw_from_socket"
   resources :framgiaers, only: [:index, :update]
   resources :matrixgames, only: [:index, :show]
   resources :auto_orders, only: [:create, :destroy]

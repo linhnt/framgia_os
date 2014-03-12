@@ -25,8 +25,18 @@ class Chat.Controller
     @dispatcher.trigger 'new_message', {user_name: @user.user_name, msg_body: message}
 
   subscribeChannel: (message) =>
-    channel = @dispatcher.subscribe('1');
+    channel = @dispatcher.subscribe($('#__current_game').data('game'))
     channel.bind('new', @channelMessage)
+    channel.bind('next_turn', @nextTurn)
+    channel.bind('draw_from_socket', @drawfromSocket)
 
   channelMessage: (message) =>
     console.log('channel event received: ' + message)
+    set_player(2, message)
+    $("#start_game").show()
+
+  nextTurn: (array) =>
+    next_turn([array[0],array[1],array[2]])
+
+  drawfromSocket: (data) =>
+    run_from_socket(parseInt(data[0]),parseInt(data[1]),parseInt(data[2]))

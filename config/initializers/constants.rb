@@ -1,3 +1,3 @@
 APP_ID= "209668532526742"
 APP_SECRET= "dc463bb6ec23db385f4896c2ee438c52"
-SITE_URL = "http://localhost:3000"
+SITE_URL = "http://192.168.1.8:3000"

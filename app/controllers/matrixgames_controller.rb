@@ -14,10 +14,20 @@ class MatrixgamesController < ApplicationController
       @matrixgame.user2_id = current_user.id
       @matrixgame.save
       @role = 2
-      WebsocketRails['1'].trigger :new, 'test'
+      WebsocketRails["MG-#{@matrixgame.id}"].trigger :new, current_user.name
     else
       @role = 0
     end
+  end
+
+  def next_turn
+    WebsocketRails["MG-#{params[:game_id]}"].trigger :next_turn, [rand(5..9),rand(5..9),rand(5..9)]
+    render nothing: true
+  end
+
+  def draw_from_socket
+    WebsocketRails["MG-#{params[:game_id]}"].trigger :draw_from_socket, params[:data]
+    render nothing: true
   end
 
   private
