@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140303065121) do
+ActiveRecord::Schema.define(version: 20140313090743) do
 
   create_table "auto_orders", force: true do |t|
     t.integer  "user_id"
@@ -48,10 +48,11 @@ ActiveRecord::Schema.define(version: 20140303065121) do
   create_table "matrixgames", force: true do |t|
     t.integer  "user1_id"
     t.integer  "user2_id"
-    t.boolean  "visibility", default: true
-    t.integer  "result"
+    t.boolean  "visibility",  default: true
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user1_score"
+    t.integer  "user2_score"
   end
 
   create_table "orders", force: true do |t|

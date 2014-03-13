@@ -30,6 +30,7 @@ class Chat.Controller
     channel.bind('next_turn', @nextTurn)
     channel.bind('draw_from_socket', @drawfromSocket)
     channel.bind('subscriber_part', @channelDestroy)
+    channel.bind('game_end', @gameEnd)
 
   channelMessage: (message) =>
     console.log('channel event received: ' + message)
@@ -44,3 +45,5 @@ class Chat.Controller
 
   channelDestroy: =>
     console.log('channel event destroy')
+  gameEnd: (data) =>
+    alert("Well done ^^")

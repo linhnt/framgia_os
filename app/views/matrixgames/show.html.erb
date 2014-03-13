@@ -193,12 +193,10 @@ function init_game(){
 }
 function next_turn(array){
   turn ++;
-  if(turn==28){
-    if(pointgroup1.attrs.point > pointgroup2.attrs.point) alert(player1name+" win!");
-    if(pointgroup1.attrs.point = pointgroup2.attrs.point) alert(player2name+" win!");
-    if(pointgroup1.attrs.point > pointgroup2.attrs.point) alert("DRAW!");
-    stage.destroyChildren();
+  if(turn==28 && <%= @role %> == 1){
+    call_set_game_end();
   }
+  if(turn==28) return;
   p1done = false;
   p2done = false;
   piecegroup1.draw_number(array);
@@ -228,6 +226,21 @@ function call_next_turn(){
       game_id: <%= @matrixgame.id %>
     },
     url: "/next_turn",
+    success: function(data){      
+    }
+  }); 
+}
+
+function call_set_game_end(){
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    data: {
+      game_id: <%= @matrixgame.id %>,
+      user1_score: pointgroup1.attrs.point,
+      user2_score: pointgroup2.attrs.point
+    },
+    url: "/set_game_end",
     success: function(data){      
     }
   }); 

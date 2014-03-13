@@ -7,8 +7,10 @@ FramgiaOs::Application.routes.draw do
   get "test_message" => "home#test_message"
   get "next_turn" => "matrixgames#next_turn"
   get "draw_from_socket" => "matrixgames#draw_from_socket"
+  get "set_game_end" => "matrixgames#set_game_end"
+  get "set_game_quit" => "matrixgames#set_game_quit"
   resources :framgiaers, only: [:index, :update]
-  resources :matrixgames, only: [:index, :show]
+  resources :matrixgames, only: [:index, :show, :create]
   resources :auto_orders, only: [:create, :destroy]
   resources :orders, only: [:create, :index, :destroy]
   resources :product_clicks, only: [:index, :update]

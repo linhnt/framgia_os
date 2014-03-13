@@ -1,7 +1,13 @@
 class MatrixgamesController < ApplicationController
   before_filter :redirect_to_home
+  
+  def create
+    matrixgame = Matrixgame.create
+    redirect_to matrixgame_path(matrixgame)
+  end
+
   def index
-    @matrixgames = Matrixgame.visible
+    @matrixgames = Matrixgame.visible.default_sort
   end
 
   def show
@@ -16,7 +22,7 @@ class MatrixgamesController < ApplicationController
       @role = 2
       WebsocketRails["MG-#{@matrixgame.id}"].trigger :new, current_user.name
     else
-      @role = 0
+      redirect_to matrixgames_path
     end
   end
 
@@ -27,6 +33,22 @@ class MatrixgamesController < ApplicationController
 
   def draw_from_socket
     WebsocketRails["MG-#{params[:game_id]}"].trigger :draw_from_socket, params[:data]
+    render nothing: true
+  end
+
+  def set_game_end
+    game = Matrixgame.find(params[:game_id].to_i)
+    game.user1_score = params[:user1_score].to_i
+    game.user2_score = params[:user2_score].to_i
+    game.save
+    WebsocketRails["MG-#{params[:game_id]}"].trigger :game_end, params[:data]
+    render nothing: true
+  end
+
+  def set_game_quit
+    game = Matrixgame.find(params[:game_id].to_i)
+    game.visibility = false
+    game.save
     render nothing: true
   end
 

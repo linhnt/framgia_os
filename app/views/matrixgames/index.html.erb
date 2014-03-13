@@ -1,7 +1,10 @@
 <img src="/assets/back1.jpg"></img>
-<h1>List avaiable game!</h1>
+<%= form_tag("/matrixgames", id: :newgame, method: :post) do -%>
+<% end %>
+<div class = "onegame" id="addgame">+ add and join your game</div>
 <% @matrixgames.each do |game| %>
 <div class="onegame">
+  <div class="gamename">GAME ID: <%= game.id %></div>
   <div class="p1">
 <% if game.user1_id %>
 <%= User.find(game.user1_id).name %>
@@ -9,6 +12,9 @@
 <%= link_to "JOIN GAME", matrixgame_path(game) %>
 <% end %>
   </div>
+<% if game.user1_score %>
+  <div class="score1"><%= game.user1_score %></div>
+<% end %>
   <div class="p2">
 <% if game.user2_id %>
 <%= User.find(game.user2_id).name %>
@@ -16,13 +22,29 @@
 <%= link_to "JOIN GAME", matrixgame_path(game) %>
 <% end %>
   </div>
+<% if game.user2_score %>
+  <div class="score2"><%= game.user2_score %></div>
+<% end %>
 </div>
 <% end %>
 <style>
 .onegame{
-  width: 100%;
+  width: 940px;
   height: 50px;
   background-color: green;
+  border-top: white solid 2px;
+  line-height: 50px;
+  color: white;
+  font-size: 25px;
+  text-align: center;
+  cursor: pointer;
+}
+.gamename{
+  text-align: left;
+  float: left;
+  background-color: blue;
+  padding-left: 10px;
+  width: 222px;
 }
 .p1{
   color: white;
@@ -39,4 +61,31 @@
   font-size: 25px;
   float: right;
 }
+
+.score1{
+  float: left;
+  background-color: red;
+  margin-left: 10px;
+  width: 77px;
+}
+
+.score2{
+  float: right;
+  background-color: red;
+  margin-right: 10px;
+  width: 77px;
+}
 </style>
+<script>
+$(".onegame").hover(
+  function(){
+    $(this).fadeTo("fast",0.8);
+  },
+  function(){
+    $(this).fadeTo("fast",1);
+  }
+);
+$("#addgame").click(function() {
+  $("#newgame").submit();
+});
+</script>
