@@ -1,13 +1,13 @@
-<div id="__current_user" data-user="<%= current_user.id %>"></div>
+<div id="__current_game" data-game="MG-<%= @matrixgame.id %>"></div>
 <div id="container" style="margin-left: auto;margin-right: auto;width: 900px;"></div>
+<% if @role == 1 %>
+<div id="start_game" style="display:none;margin-right:auto;margin-left:auto;text-align:center;background-color:green;color:white;width:200px;padding:10px;cursor:pointer;">START GAME</div>
+<% end %>
 <%= javascript_include_tag "matrixgame/kinetic-v5.0.1.min" %>
 <%= javascript_include_tag "matrixgame/gameobjects" %>
 <script>
-$(document).ready(function() {
-window.chatController = new Chat.Controller("<%= SITE_URL %>/websocket", true);
-});
   var STAGEWIDTH = 900;
-  var STAGEHEIGHT = 600;
+  var STAGEHEIGHT = 550;
   var user1 = false;
   var user2 = false;
   var player1name = "";
@@ -130,8 +130,9 @@ stage.find(".piece").each(function(p){
             pointgroup2.draw_point();
           }
           stage.redraw_layer(pointLayer);
-          if (p1done && p2done){
-            next_turn();
+          call_draw_from_socket([this.attrs.g_id,i,j]);
+          if (p1done && p2done && this.attrs.g_id == 1){
+            call_next_turn();
           }
           break find_position;
         }
@@ -162,11 +163,11 @@ function set_player(g_id,name){
     user2joined = true;
     player2name = name;
   }
-  if (user2joined&&user1joined) next_turn();
   stage.redraw_layer(nameLayer);
 }
 
 function run_from_socket(g_id,i,j){
+  if (g_id == <%= @role %>) return;
   p = g_id==1 ? piecegroup1:piecegroup2;
   p.attrs.gamearray[i+2][j+2] = p.attrs.v1;
   p.attrs.gamearray[i+2][j+3] = p.attrs.v2;
@@ -183,14 +184,14 @@ function run_from_socket(g_id,i,j){
     pointgroup2.draw_point();
   }
   stage.redraw_layer(pointLayer);
-  if (p1done && p2done){
-    next_turn();
+  if (p1done && p2done && <%= @role %> == 1){
+    call_next_turn();
   }
 }
 function init_game(){
   turn = 0;
 }
-function next_turn(){
+function next_turn(array){
   turn ++;
   if(turn==28){
     if(pointgroup1.attrs.point > pointgroup2.attrs.point) alert(player1name+" win!");
@@ -200,10 +201,36 @@ function next_turn(){
   }
   p1done = false;
   p2done = false;
-  array = [Math.floor(Math.random()*3),Math.floor(Math.random()*3),Math.floor(Math.random()*3)];
   piecegroup1.draw_number(array);
   piecegroup2.draw_number(array);
   stage.redraw_layer(pieceLayer);
+}
+
+function call_draw_from_socket(client_data){
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    data: {
+      game_id: <%= @matrixgame.id %>,
+      data: client_data
+    },
+    url: "/draw_from_socket",
+    success: function(data){      
+    }
+  }); 
+}
+
+function call_next_turn(){
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    data: {
+      game_id: <%= @matrixgame.id %>
+    },
+    url: "/next_turn",
+    success: function(data){      
+    }
+  }); 
 }
 // GAME PROCESS
 var turn,array,p1done,p2done;
@@ -215,5 +242,9 @@ init_game();
   set_player(1, player1name);
   set_player(2, player2name);
 <% end %>
-new Chat.Controller("localhost:3000/websocket", true);
+new Chat.Controller("192.168.1.8:3000/websocket", true);
+$("#start_game").click(function(){
+  call_next_turn();
+  $(this).hide();
+});
 </script>
