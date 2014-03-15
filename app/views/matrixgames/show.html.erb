@@ -223,7 +223,9 @@ function call_next_turn(){
     type: "GET",
     dataType: "json",
     data: {
-      game_id: <%= @matrixgame.id %>
+      game_id: <%= @matrixgame.id %>,
+      user1_score: pointgroup1.attrs.point,
+      user2_score: pointgroup2.attrs.point
     },
     url: "/next_turn",
     success: function(data){      

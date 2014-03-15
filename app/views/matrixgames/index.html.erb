@@ -1,9 +1,11 @@
+<div id="__current_game" data-game="MG-index"></div>
 <img src="/assets/back1.jpg"></img>
 <%= form_tag("/matrixgames", id: :newgame, method: :post) do -%>
 <% end %>
 <div class = "onegame" id="addgame">+ add and join your game</div>
+<div id = "listgame">
 <% @matrixgames.each do |game| %>
-<div class="onegame">
+<div class="onegame"  id="<%= game.id %>">
   <div class="gamename">GAME ID: <%= game.id %></div>
   <div class="p1">
 <% if game.user1_id %>
@@ -12,9 +14,8 @@
 <%= link_to "JOIN GAME", matrixgame_path(game) %>
 <% end %>
   </div>
-<% if game.user1_score %>
-  <div class="score1"><%= game.user1_score %></div>
-<% end %>
+<div class="score1"><% if game.user1_score %><%= game.user1_score %><% end %></div>
+<div class="gamedone"><%= game.done ? "終" : "" %></div>
   <div class="p2">
 <% if game.user2_id %>
 <%= User.find(game.user2_id).name %>
@@ -22,20 +23,19 @@
 <%= link_to "JOIN GAME", matrixgame_path(game) %>
 <% end %>
   </div>
-<% if game.user2_score %>
-  <div class="score2"><%= game.user2_score %></div>
-<% end %>
+<div class="score2"><% if game.user2_score %><%= game.user2_score %><% end %></div>
 </div>
 <% end %>
+</div>
 <style>
 .onegame{
   width: 940px;
-  height: 50px;
+  height: 44px;
   background-color: green;
   border-top: white solid 2px;
-  line-height: 50px;
+  line-height: 44px;
   color: white;
-  font-size: 25px;
+  font-size: 22px;
   text-align: center;
   cursor: pointer;
 }
@@ -48,18 +48,20 @@
 }
 .p1{
   color: white;
-  line-height: 50px;
+  line-height: 44px;
   padding-left: 20px;
-  font-size: 25px;
+  font-size: 22px;
   float: left;
+  width: 222px;
 }
 
 .p2{
   color: white;
-  line-height: 50px;
+  line-height: 44px;
   padding-right: 20px;
-  font-size: 25px;
+  font-size: 22px;
   float: right;
+  width: 222px;
 }
 
 .score1{
@@ -75,6 +77,11 @@
   margin-right: 10px;
   width: 77px;
 }
+
+.gamedone{
+  float: left;
+  padding-left: 10px;
+}
 </style>
 <script>
 $(".onegame").hover(
@@ -88,4 +95,17 @@ $(".onegame").hover(
 $("#addgame").click(function() {
   $("#newgame").submit();
 });
+function add_game(game_id,user1name){
+  $("#listgame").prepend("<div class='onegame' id='"+game_id+"'><div class='gamename'>GAME ID: "+game_id+"</div><div class='p1'>"+user1name+"</div><div class='score1'></div><div class='gamedone'></div><div class='p2'><a href='/matrixgames/"+game_id+"''>JOIN GAME</a></div><div class='score2'></div></div>");
+  $("#"+game_id).hide().show(1000);
+  $("#"+game_id).hover(
+    function(){
+      $(this).fadeTo("fast",0.8);
+    },
+    function(){
+      $(this).fadeTo("fast",1);
+    }
+  );
+}
+new Chat.Controller("192.168.1.8:3000/websocket", true);
 </script>

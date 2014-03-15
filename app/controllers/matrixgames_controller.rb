@@ -3,6 +3,7 @@ class MatrixgamesController < ApplicationController
   
   def create
     matrixgame = Matrixgame.create
+    WebsocketRails["MG-index"].trigger :new_game_added, [matrixgame.id,current_user.name]
     redirect_to matrixgame_path(matrixgame)
   end
 
@@ -18,9 +19,12 @@ class MatrixgamesController < ApplicationController
       @role = 1
     elsif @matrixgame.user2_id.nil?
       @matrixgame.user2_id = current_user.id
+      @matrixgame.user1_score = 0
+      @matrixgame.user2_score = 0
       @matrixgame.save
       @role = 2
       WebsocketRails["MG-#{@matrixgame.id}"].trigger :new, current_user.name
+      WebsocketRails["MG-index"].trigger :new_all, [@matrixgame.id,current_user.name]
     else
       redirect_to matrixgames_path
     end
@@ -28,6 +32,7 @@ class MatrixgamesController < ApplicationController
 
   def next_turn
     WebsocketRails["MG-#{params[:game_id]}"].trigger :next_turn, [rand(5..9),rand(5..9),rand(5..9)]
+    WebsocketRails["MG-index"].trigger :update_scores, [params[:game_id],params[:user1_score],params[:user2_score]]
     render nothing: true
   end
 
@@ -40,8 +45,10 @@ class MatrixgamesController < ApplicationController
     game = Matrixgame.find(params[:game_id].to_i)
     game.user1_score = params[:user1_score].to_i
     game.user2_score = params[:user2_score].to_i
+    game.done = true
     game.save
     WebsocketRails["MG-#{params[:game_id]}"].trigger :game_end, params[:data]
+    WebsocketRails["MG-index"].trigger :game_end_all, params[:game_id]
     render nothing: true
   end
 
