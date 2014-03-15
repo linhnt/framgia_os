@@ -1,0 +1,23 @@
+<h1>Listing reverse_auctions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Price</th>
+      <th>Product</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @reverse_auctions.each do |reverse_auction| %>
+      <tr>
+        <td><%= reverse_auction.price %></td>
+        <td><%= reverse_auction.m_food.name %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Reverse auction', new_reverse_auction_path %>

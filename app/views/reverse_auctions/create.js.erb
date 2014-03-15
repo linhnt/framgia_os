@@ -1,0 +1,5 @@
+<% if @error %>
+  $(".notice").text(@error);
+<% else %>
+  $(".notice").text("Reverse auction: " + <%= @reverse_auction.price %>);
+<% end %>

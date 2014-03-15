@@ -22,7 +22,7 @@ gem "better_errors"
 gem "binding_of_caller"
 gem "rails-erd"
 gem "devise"
-gem "websocket-rails", :git => "git@github.com:websocket-rails/websocket-rails.git"
+gem "websocket-rails", :git => "https://github.com/websocket-rails/websocket-rails.git"
 group :development do
   gem 'mysql2'
   gem 'rspec-rails'
