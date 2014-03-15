@@ -27,7 +27,7 @@
 	                </li>
 	                <li>
 	                	<%= link_to orders_path do %>
-	                	 Balance: <%= current_user.amount %>VND
+	                	 Balance: <span class="amount"><%= current_user.amount %></span>VND
 	                	<% end %>
 	                </li>
 <% if current_user.is_admin? %>
