@@ -1,8 +1,32 @@
-<div class="product_click_details">
-  <%= @product_click.food.try(:name) %> <br>
-  <%= @product_click.food.try(:price) %> VND<br>
+<% if user_signed_in? %>
+  <div class="page-header">
+    <h1>This is product of today !</h1>
+    <div class="notice_click">
+      <center>
+        <p>
+          You'll winner if you are first person when total money click of product equal price of product.
+        </p>
+        <p> Let's click to winner! </p>
+      </center>
+    </div>
+    <div class="result">
+      <% if @product_click.try(:winer_id) %>
+        Winner: <%= @product_click.user.name %>
+      <% end %>
+    </div>
+  </div>
+  <div class="product_click_details">
+    <br><h3 class="panel-title"><%= @product_click.food.try(:name) %></h3>
+    <% if @product_click.food.url %>
+      <%= image_tag @product_click.food.try(:url), width: "300px", style: "border: 2px black solid" %><br/>
+    <% end %>
+    Price: <span class="label label-success"><%= @product_click.food.try(:price) %>VND</span>
+    <div class="click_now">
+      <%= form_for @product_click, remote: true do |f| %>
+        <%= f.submit value: "Click now!", class: "submit_product_click" %>
+      <% end %>
+      <em>( Only 1000VND/1 click )</em>
+    </div>
+  </div>
   <p class="test"><%= render "click_details", count: @count %></p>
-  <%= form_for @product_click, remote: true do |f| %>
-    <%= f.submit value: "Click" %>
-  <% end %>
-</div>
+<% end %>
