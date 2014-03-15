@@ -67,12 +67,38 @@ ActiveRecord::Schema.define(version: 20140315062544) do
     t.string   "state",            default: "init"
   end
 
+  create_table "product_auctions", force: true do |t|
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.integer  "m_food_id"
+    t.boolean  "auction",    default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "product_autions", force: true do |t|
+    t.integer  "m_food_id"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.boolean  "auction",    default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "product_clicks", force: true do |t|
     t.integer  "product_id"
     t.integer  "price"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "winer_id"
+  end
+
+  create_table "reverse_auctions", force: true do |t|
+    t.integer  "price"
+    t.integer  "user_id"
+    t.integer  "product_auction_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "turns", force: true do |t|

@@ -1,8 +1,8 @@
 GIT
-  remote: git@github.com:websocket-rails/websocket-rails.git
-  revision: 060af4602a053c356eb851efb841c281ee800d01
+  remote: https://github.com/websocket-rails/websocket-rails.git
+  revision: a603237cda5fe53c97a4ed2069c2c63a2e556e8d
   specs:
-    websocket-rails (0.6.2)
+    websocket-rails (0.7.0)
       em-synchrony
       faye-websocket
       hiredis
