@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   
   has_many :orders
   has_many :auto_orders
+  has_many :history_clicks, dependent: :destroy
 
   class << self
     def check_user data

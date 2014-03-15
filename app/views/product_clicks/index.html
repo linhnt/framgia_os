@@ -1,6 +1,8 @@
-<%= @product_click.food.try(:name) %> <br>
-<%= @product_click.food.try(:price) %> VND
-
-<%= form_for @product_click do |f| %>
-  <%= f.submit value: "Click" %>
-<% end %>
+<div class="product_click_details">
+  <%= @product_click.food.try(:name) %> <br>
+  <%= @product_click.food.try(:price) %> VND<br>
+  <p class="test"><%= render "click_details", count: @count %></p>
+  <%= form_for @product_click, remote: true do |f| %>
+    <%= f.submit value: "Click" %>
+  <% end %>
+</div>

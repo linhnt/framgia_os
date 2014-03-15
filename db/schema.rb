@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(version: 20140303065121) do
     t.integer  "price"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "winer_id"
   end
 
   create_table "turns", force: true do |t|

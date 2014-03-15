@@ -11,5 +11,5 @@ FramgiaOs::Application.routes.draw do
   resources :matrixgames, only: [:index, :show]
   resources :auto_orders, only: [:create, :destroy]
   resources :orders, only: [:create, :index, :destroy]
-  resources :product_clicks
+  resources :product_clicks, only: [:index, :update]
 end
