@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @reverse_auction.user_id %>
+</p>
+
+<p>
+  <strong>Price:</strong>
+  <%= @reverse_auction.price %>
+</p>
+
+<p>
+  <strong>M food:</strong>
+  <%= @reverse_auction.m_food_id %>
+</p>
+
+<%= link_to 'Edit', edit_reverse_auction_path(@reverse_auction) %> |
+<%= link_to 'Back', reverse_auctions_path %>

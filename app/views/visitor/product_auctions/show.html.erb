@@ -1,0 +1,19 @@
+<h2> <%= @product_auction.m_food.try :name %> </h2>
+<p>
+  <strong>Start</strong>
+  <%= @product_auction.start_time.strftime("%d/%m/%y %I:%M") %>
+  <strong>Finish</strong>
+  <%= @product_auction.end_time.strftime("%d/%m/%y %I:%M") %>
+</p>
+<div >
+<%= image_tag @product_auction.m_food.url %>
+</div>
+<p class="notice"></p>
+<div class=reverse_auction>
+<%= form_tag reverse_auctions_path, remote: true do %>
+  <%= hidden_field_tag :product_id, @product_auction.id %>
+  <%= label_tag :price %>
+  <%= text_field_tag :price %>
+  <%= submit_tag "Submit" %>
+<% end %>
+</div>

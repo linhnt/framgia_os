@@ -1,4 +1,8 @@
 FramgiaOs::Application.routes.draw do
+  resources :product_auctions
+
+  resources :reverse_auctions
+
   devise_for :users
   root to: "home#login"
   get "home/callback" => "home#callback"
@@ -14,4 +18,7 @@ FramgiaOs::Application.routes.draw do
   resources :auto_orders, only: [:create, :destroy]
   resources :orders, only: [:create, :index, :destroy]
   resources :product_clicks, only: [:index, :update]
+  namespace :visitor do
+    resources :product_auctions, only: [:index, :show]
+  end
 end

@@ -1,0 +1,24 @@
+<h1>Listing product_auctions</h1>
+<table border=1>
+  <thead>
+    <tr>
+      <th>Start time</th>
+      <th>End time</th>
+      <th>M food</th>
+      <th>Auction</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @product_auctions.each do |product_auction| %>
+      <tr>
+        <td><%= product_auction.start_time.strftime("%d/%m/%y %I:%M") %></td>
+        <td><%= product_auction.end_time.strftime("%d/%m/%y %I:%M") %></td>
+        <td><%= product_auction.m_food.name %></td>
+        <td><%= link_to 'Auction', visitor_product_auction_path(product_auction) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+
