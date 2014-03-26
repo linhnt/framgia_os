@@ -247,6 +247,19 @@ function call_set_game_end(){
     }
   }); 
 }
+
+function call_set_game_quit(){
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    data: {
+      game_id: <%= @matrixgame.id %>
+    },
+    url: "/set_game_quit",
+    success: function(data){      
+    }
+  }); 
+}
 // GAME PROCESS
 var turn,array,p1done,p2done;
 init_game();

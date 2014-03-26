@@ -23,8 +23,15 @@ class MatrixgamesController < ApplicationController
       @matrixgame.user2_score = 0
       @matrixgame.save
       @role = 2
-      WebsocketRails["MG-#{@matrixgame.id}"].trigger :new, current_user.name
-      WebsocketRails["MG-index"].trigger :new_all, [@matrixgame.id,current_user.name]
+      if WebsocketRails["MG-#{@matrixgame.id}"].subscribers.count == 1
+        WebsocketRails["MG-#{@matrixgame.id}"].trigger :new, current_user.name
+        WebsocketRails["MG-index"].trigger :new_all, [@matrixgame.id,current_user.name]
+      else
+        @matrixgame.visibility = false
+        @matrixgame.save
+        WebsocketRails["MG-index"].trigger :quit_this, [@matrixgame.id]
+        redirect_to matrixgames_path
+      end
     else
       redirect_to matrixgames_path
     end
@@ -56,6 +63,7 @@ class MatrixgamesController < ApplicationController
     game = Matrixgame.find(params[:game_id].to_i)
     game.visibility = false
     game.save
+    WebsocketRails["MG-index"].trigger :quit_this, [params[:game_id].to_i]
     render nothing: true
   end
 
