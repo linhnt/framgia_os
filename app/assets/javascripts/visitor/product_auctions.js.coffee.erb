@@ -1,0 +1,29 @@
+jQuery ->
+  window.auctionController = new Auction.Controller("<%= SOCKET_URL %>/websocket", true);
+
+window.Auction = {}
+
+class Auction.Controller
+
+  constructor: (url,useWebSockets) ->
+    @dispatcher = new WebSocketRails(url,useWebSockets)
+    console.log('connect 1')
+    console.log(@dispatcher)
+    @dispatcher.on_open = @subscribeChannel 
+
+  subscribeChannel: (message) =>
+    channel = @dispatcher.subscribe("reverse_auction")
+    channel.bind('total_user', @channelMessage)
+
+    channel1 = @dispatcher.subscribe("show_winner")
+    channel1.bind('get_winner', @channel1Message)
+
+  channelMessage: (message) =>
+    $("#total_players").text("");
+    i = message.length - 1
+    while i >= 0
+      $("#total_players").append "<span>" + message[i] + "</span><br>"
+      i--
+  channel1Message: (message) =>
+    $("#reverse_auction_winner").text "Winner reverse product aution!: " + message  if message.length > 0
+    
