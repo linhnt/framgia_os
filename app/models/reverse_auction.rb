@@ -31,13 +31,15 @@ class ReverseAuction < ActiveRecord::Base
             dups = dups + check_dup(reverse_auctions, r)
           end
           uniqs = reverse_auctions - dups
-          uniqs.sort{|b, a| b.price <=> a.price}.first.user.name
+          winner = uniqs.sort{|b, a| b.price <=> a.price}.first.try(:user)
+          winner ? winner.name : nil
         end
       end
     end
 
     def check_dup active_record, obj
       dups = active_record.where(price: obj.price).to_a
+      active_record = active_record - dups
       dups.count > 1 ? dups : []
     end
   end
