@@ -8,6 +8,7 @@ class Chat.Controller
   constructor: (url,useWebSockets) ->
     @dispatcher = new WebSocketRails(url,useWebSockets)
     console.log('connect')
+    console.log(@dispatcher)
     @dispatcher.on_open = @subscribeChannel 
     @bindEvents()
 

@@ -9,6 +9,14 @@ class ProductAuction < ActiveRecord::Base
     DateTime.now, DateTime.now)
   end
 
+  scope :cur_reverse_auctions, -> do
+    where("start_time < ? And end_time > ?", DateTime.now, DateTime.now)
+  end
+
+  def cur_reverse_auction?
+    ProductAuction.cur_reverse_auctions.where(id: self.id).count > 0
+  end
+
   private
   def check_end_time
     if self.start_time && self.end_time && self.start_time > self.end_time

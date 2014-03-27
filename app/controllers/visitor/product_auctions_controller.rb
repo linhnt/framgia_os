@@ -7,5 +7,6 @@ class Visitor::ProductAuctionsController < ApplicationController
 
   def show
     @product_auction = ProductAuction.find params[:id]
+    @reverse_auction_players = ReverseAuction.player_names(@product_auction.id).uniq
   end
 end

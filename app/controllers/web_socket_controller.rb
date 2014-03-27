@@ -40,4 +40,8 @@ class WebSocketController < WebsocketRails::BaseController
     users = connection_store.collect_all(:user)
     broadcast_message :user_list, users
   end
+
+  def reverse_auction_players
+    
+  end
 end

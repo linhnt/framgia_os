@@ -270,7 +270,7 @@ init_game();
   set_player(1, player1name);
   set_player(2, player2name);
 <% end %>
-new Chat.Controller("192.168.1.8:3000/websocket", true);
+new Chat.Controller("192.168.1.198:3000/websocket", true);
 $("#start_game").click(function(){
   call_next_turn();
   $(this).hide();

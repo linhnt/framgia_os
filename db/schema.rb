@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140315062544) do
+ActiveRecord::Schema.define(version: 20140326122240) do
 
   create_table "auto_orders", force: true do |t|
     t.integer  "user_id"
@@ -71,9 +71,10 @@ ActiveRecord::Schema.define(version: 20140315062544) do
     t.datetime "start_time"
     t.datetime "end_time"
     t.integer  "m_food_id"
-    t.boolean  "auction",    default: false
+    t.boolean  "auction",     default: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "show_winner", default: false
   end
 
   create_table "product_autions", force: true do |t|
