@@ -13,6 +13,7 @@ FramgiaOs::Application.routes.draw do
   get "draw_from_socket" => "matrixgames#draw_from_socket"
   get "set_game_end" => "matrixgames#set_game_end"
   get "set_game_quit" => "matrixgames#set_game_quit"
+  get "get_click_result" => "product_clicks#get_click_result"
   resources :framgiaers, only: [:index, :update]
   resources :matrixgames, only: [:index, :show, :create]
   resources :auto_orders, only: [:create, :destroy]

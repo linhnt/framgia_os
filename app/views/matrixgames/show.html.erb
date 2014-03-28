@@ -130,7 +130,7 @@ stage.find(".piece").each(function(p){
             pointgroup2.draw_point();
           }
           stage.redraw_layer(pointLayer);
-          call_draw_from_socket([this.attrs.g_id,i,j]);
+          call_draw_from_socket([this.attrs.g_id,i,j,this.attrs.v1,this.attrs.v2,this.attrs.v3]);
           if (p1done && p2done && this.attrs.g_id == 1){
             call_next_turn();
           }
@@ -166,12 +166,12 @@ function set_player(g_id,name){
   stage.redraw_layer(nameLayer);
 }
 
-function run_from_socket(g_id,i,j){
+function run_from_socket(g_id,i,j,v1,v2,v3){
   if (g_id == <%= @role %>) return;
   p = g_id==1 ? piecegroup1:piecegroup2;
-  p.attrs.gamearray[i+2][j+2] = p.attrs.v1;
-  p.attrs.gamearray[i+2][j+3] = p.attrs.v2;
-  p.attrs.gamearray[i+2][j+4] = p.attrs.v3;
+  p.attrs.gamearray[i+2][j+2] = v1;
+  p.attrs.gamearray[i+2][j+3] = v2;
+  p.attrs.gamearray[i+2][j+4] = v3;
   p.attrs.numberGroup.redraw_number();
   stage.redraw_layer(numberLayer);
   p.destroyChildren();
@@ -259,6 +259,10 @@ function call_set_game_quit(){
     success: function(data){      
     }
   }); 
+  if (turn<28){
+    alert("Your friend quited!");
+    window.location.href = "/matrixgames";
+  }
 }
 // GAME PROCESS
 var turn,array,p1done,p2done;
@@ -270,7 +274,7 @@ init_game();
   set_player(1, player1name);
   set_player(2, player2name);
 <% end %>
-new Chat.Controller("192.168.1.198:3000/websocket", true);
+new Chat.Controller("<%= SOCKET_URL %>/websocket", true);
 $("#start_game").click(function(){
   call_next_turn();
   $(this).hide();
