@@ -37,6 +37,8 @@ class Chat.Controller
     channel.bind('game_end', @gameEnd)
     channel.bind('game_end_all', @gameEndAll)
     channel.bind('update_scores', @updateScore)
+    channel.bind('one_click', @oneClick)
+    channel.bind('game_click_end', @gameClickEnd)
 
   channelMessage: (message) =>
     console.log('channel event received: ' + message)
@@ -56,11 +58,18 @@ class Chat.Controller
   nextTurn: (array) =>
     next_turn([array[0],array[1],array[2]])
 
+  gameClickEnd: =>
+    run_end_game()
+
   drawfromSocket: (data) =>
-    run_from_socket(parseInt(data[0]),parseInt(data[1]),parseInt(data[2]))
+    console.log(data)
+    run_from_socket(parseInt(data[0]),parseInt(data[1]),parseInt(data[2]),parseInt(data[3]),parseInt(data[4]),parseInt(data[5]))
 
   channelDestroy: =>
     call_set_game_quit()
+
+  oneClick: =>
+    update_info()
 
   gameEnd: (data) =>
     alert("Well done ^^")

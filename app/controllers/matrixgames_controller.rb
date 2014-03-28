@@ -38,7 +38,7 @@ class MatrixgamesController < ApplicationController
   end
 
   def next_turn
-    WebsocketRails["MG-#{params[:game_id]}"].trigger :next_turn, [rand(5..9),rand(5..9),rand(5..9)]
+    WebsocketRails["MG-#{params[:game_id]}"].trigger :next_turn, [rand(6..9),rand(6..9),rand(6..9)]
     WebsocketRails["MG-index"].trigger :update_scores, [params[:game_id],params[:user1_score],params[:user2_score]]
     render nothing: true
   end
@@ -61,9 +61,11 @@ class MatrixgamesController < ApplicationController
 
   def set_game_quit
     game = Matrixgame.find(params[:game_id].to_i)
-    game.visibility = false
-    game.save
-    WebsocketRails["MG-index"].trigger :quit_this, [params[:game_id].to_i]
+    unless game.done
+      game.visibility = false
+      game.save
+      WebsocketRails["MG-index"].trigger :quit_this, [params[:game_id].to_i]
+    end
     render nothing: true
   end
 
