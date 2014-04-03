@@ -1,5 +1,35 @@
 <div id="__current_game" data-game="MG-index"></div>
 <img src="/assets/back1.jpg"></img>
+<h3>Total completed games: <%= Matrixgame.total_completed_game %></h3>
+<hr>
+<h3>Best point in game: <%= Matrixgame.best_score.better_point %></h3>
+<% g1=Matrixgame.best_score %>
+<div class="onegame">
+  <div class="gamename">GAME ID: <%= g1.id %></div>
+  <div class="p1">
+<%= User.find(g1.user1_id).name %>
+  </div>
+<div class="score1"><%= g1.user1_score %></div>
+<div class="gamedone">終</div>
+  <div class="p2">
+<%= User.find(g1.user2_id).name %>
+  </div>
+<div class="score2"><%= g1.user2_score %></div>
+</div>
+<h3>Best rate in game: <%= Matrixgame.best_rate.rate %></h3>
+<% g2=Matrixgame.best_rate %>
+<div class="onegame">
+  <div class="gamename">GAME ID: <%= g2.id %></div>
+  <div class="p1">
+<%= User.find(g2.user1_id).name %>
+  </div>
+<div class="score1"><%= g2.user1_score %></div>
+<div class="gamedone">終</div>
+  <div class="p2">
+<%= User.find(g2.user2_id).name %>
+  </div>
+<div class="score2"><%= g2.user2_score %></div>
+</div>
 <%= form_tag("/matrixgames", id: :newgame, method: :post) do -%>
 <% end %>
 <div class = "onegame" id="addgame">+ add and join your game</div>

@@ -279,4 +279,29 @@ $("#start_game").click(function(){
   call_next_turn();
   $(this).hide();
 });
+$(function(){
+<% if @role==1 %>
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    data: {
+      game_id: <%= @matrixgame.id %>
+    },
+    url: "/after_create_game",
+    success: function(data){      
+    }
+  }); 
+<% else %>
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    data: {
+      game_id: <%= @matrixgame.id %>
+    },
+    url: "/after_join_game",
+    success: function(data){      
+    }
+  }); 
+<% end %>
+})
 </script>

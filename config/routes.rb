@@ -14,6 +14,8 @@ FramgiaOs::Application.routes.draw do
   get "set_game_end" => "matrixgames#set_game_end"
   get "set_game_quit" => "matrixgames#set_game_quit"
   get "get_click_result" => "product_clicks#get_click_result"
+  get "after_create_game" => "matrixgames#after_create_game"
+  get "after_join_game" => "matrixgames#after_join_game"
   resources :framgiaers, only: [:index, :update]
   resources :matrixgames, only: [:index, :show, :create]
   resources :auto_orders, only: [:create, :destroy]

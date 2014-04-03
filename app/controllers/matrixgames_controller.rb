@@ -3,9 +3,26 @@ class MatrixgamesController < ApplicationController
   
   def create
     matrixgame = Matrixgame.create
-    WebsocketRails["MG-index"].trigger :new_game_added, [matrixgame.id,current_user.name]
+    # WebsocketRails["MG-index"].trigger :new_game_added, [matrixgame.id,current_user.name]
     redirect_to matrixgame_path(matrixgame)
   end
+
+  def after_create_game
+    WebsocketRails["MG-index"].trigger :new_game_added, [params[:game_id],current_user.name]
+  end
+
+  def after_join_game
+   @matrixgame = Matrixgame.find params[:game_id].to_i
+   if WebsocketRails["MG-#{@matrixgame.id}"].subscribers.count == 1
+     WebsocketRails["MG-#{@matrixgame.id}"].trigger :new, current_user.name
+     WebsocketRails["MG-index"].trigger :new_all, [@matrixgame.id,current_user.name]
+   else
+     @matrixgame.visibility = false
+     @matrixgame.save
+     WebsocketRails["MG-index"].trigger :quit_this, [@matrixgame.id]
+     redirect_to matrixgames_path
+   end
+  end  
 
   def index
     @matrixgames = Matrixgame.visible.default_sort
@@ -23,15 +40,6 @@ class MatrixgamesController < ApplicationController
       @matrixgame.user2_score = 0
       @matrixgame.save
       @role = 2
-      if WebsocketRails["MG-#{@matrixgame.id}"].subscribers.count == 1
-        WebsocketRails["MG-#{@matrixgame.id}"].trigger :new, current_user.name
-        WebsocketRails["MG-index"].trigger :new_all, [@matrixgame.id,current_user.name]
-      else
-        @matrixgame.visibility = false
-        @matrixgame.save
-        WebsocketRails["MG-index"].trigger :quit_this, [@matrixgame.id]
-        redirect_to matrixgames_path
-      end
     else
       redirect_to matrixgames_path
     end
