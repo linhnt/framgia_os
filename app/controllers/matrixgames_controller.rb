@@ -22,7 +22,14 @@ class MatrixgamesController < ApplicationController
      WebsocketRails["MG-index"].trigger :quit_this, [@matrixgame.id]
      redirect_to matrixgames_path
    end
-  end  
+  end
+
+  def send_game_mess
+    return if params[:chat_text] == ""
+    @matrixgame = Matrixgame.find params[:game_id].to_i
+    WebsocketRails["MG-#{@matrixgame.id}"].trigger :send_game_mess, "<b>#{params[:user_name]}</b>: #{params[:chat_text]}"
+    render nothing: true
+  end
 
   def index
     @matrixgames = Matrixgame.visible.default_sort

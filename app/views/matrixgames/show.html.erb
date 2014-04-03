@@ -1,5 +1,9 @@
 <div id="__current_game" data-game="MG-<%= @matrixgame.id %>"></div>
-<div id="container" style="margin-left: auto;margin-right: auto;width: 900px;"></div>
+<div id="chat_content" style="margin: 5px;width: 880px;height: 100px;background-color: white;position: absolute;margin-top: 5px;padding: 5px;color: green;z-index: 1;overflow:scroll;"></div>
+<div id="game_container" style="width: 900px;float: left"></div>
+<input type="text" id="chat_here" style="float: left;margin-left: 5px;margin-top: 5px;width: 795px;"/>
+<button type="button" id="chat_button" class="btn btn-success" style="float: left;margin-top: 5px;margin-left: 15px;">SEND</button>
+<div style="clear: both;"></div>
 <% if @role == 1 %>
 <div id="start_game" style="display:none;margin-right:auto;margin-left:auto;text-align:center;background-color:green;color:white;width:200px;padding:10px;cursor:pointer;">START GAME</div>
 <% end %>
@@ -41,7 +45,7 @@ for (var i=0;i<=12;i++){
 }
 // Init stage, layers and varibles
 var stage = new Kinetic.MatrixStage({
-  container: "container",
+  container: "game_container",
   width: STAGEWIDTH,
   height: STAGEHEIGHT
 });
@@ -60,17 +64,7 @@ var background_rect = new Kinetic.Rect({
   stroke: "black",
   strokeWidth: 10
 });
-var gametitle = new Kinetic.Text({
-  x: 450,
-  y: 50,
-  text: "[FramgiaOSX] SocketMatrixGame\n     Who will be the WINNER!?",
-  fontSize: 30,
-  fontFamily: "Calibri",
-  fill: "white"
-});
-gametitle.offsetX(gametitle.width()/2);
 backgroundLayer.add(background_rect);
-backgroundLayer.add(gametitle);
 
 // Draw tables
 var table_for_player1 = new Kinetic.Table({x:100,y:150,basesize:35});
@@ -288,7 +282,7 @@ $(function(){
       game_id: <%= @matrixgame.id %>
     },
     url: "/after_create_game",
-    success: function(data){      
+    success: function(data){
     }
   }); 
 <% else %>
@@ -299,9 +293,31 @@ $(function(){
       game_id: <%= @matrixgame.id %>
     },
     url: "/after_join_game",
-    success: function(data){      
+    success: function(data){ 
     }
   }); 
 <% end %>
+function send_mess(){
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    data: {
+      game_id: <%= @matrixgame.id %>,
+      user_name: "<%= current_user.name %>",
+      chat_text: $("#chat_here").val()
+    },
+    url: "/send_game_mess",
+    success: function(data){
+    }
+  });
+}
+$("#chat_here").keyup(function(e){
+  if(e.keyCode == 13){
+    send_mess();
+  }
+});
+$("#chat_button").click(function(){
+  send_mess();
+});
 })
 </script>
