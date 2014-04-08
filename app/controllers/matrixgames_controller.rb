@@ -15,7 +15,6 @@ class MatrixgamesController < ApplicationController
    @matrixgame = Matrixgame.find params[:game_id].to_i
    if WebsocketRails["MG-#{@matrixgame.id}"].subscribers.count == 1
      WebsocketRails["MG-#{@matrixgame.id}"].trigger :new, current_user.name
-     WebsocketRails["MG-index"].trigger :new_all, [@matrixgame.id,current_user.name]
    else
      @matrixgame.visibility = false
      @matrixgame.save
@@ -46,6 +45,7 @@ class MatrixgamesController < ApplicationController
       @matrixgame.user1_score = 0
       @matrixgame.user2_score = 0
       @matrixgame.save
+      WebsocketRails["MG-index"].trigger :new_all, [@matrixgame.id,current_user.name]
       @role = 2
     else
       redirect_to matrixgames_path

@@ -1,5 +1,5 @@
 <div id="__current_game" data-game="MG-<%= @matrixgame.id %>"></div>
-<div id="chat_content" style="margin: 5px;width: 880px;height: 100px;background-color: white;position: absolute;margin-top: 5px;padding: 5px;color: green;z-index: 1;overflow:scroll;"></div>
+<div id="chat_content" style="margin: 5px;width: 880px;height: 120px;background-color: white;position: absolute;margin-top: 5px;padding: 5px;color: green;z-index: 1;overflow-y:scroll;"></div>
 <div id="game_container" style="width: 900px;float: left"></div>
 <input type="text" id="chat_here" style="float: left;margin-left: 5px;margin-top: 5px;width: 795px;"/>
 <button type="button" id="chat_button" class="btn btn-success" style="float: left;margin-top: 5px;margin-left: 15px;">SEND</button>
@@ -11,7 +11,7 @@
 <%= javascript_include_tag "matrixgame/gameobjects" %>
 <script>
   var STAGEWIDTH = 900;
-  var STAGEHEIGHT = 550;
+  var STAGEHEIGHT = 540;
   var user1 = false;
   var user2 = false;
   var player1name = "";
@@ -139,16 +139,15 @@ stage.find(".piece").each(function(p){
 });
 
 function set_player(g_id,name){
-  xx = g_id==1 ? 100:800;
+  xx = g_id==1 ? 100:485;
   temp = new Kinetic.Text({
     x: xx,
-    y: 115,
+    y: 500,
     text: name,
     fontSize: 27,
     fontFamily: "Calibri",
     fill: "white"
   });
-  if (g_id==2) temp.offsetX(temp.width());
   nameLayer.add(temp);
   if(g_id==1){
     user1joined = true;
