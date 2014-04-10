@@ -9,6 +9,7 @@ class MatrixgamesController < ApplicationController
 
   def after_create_game
     WebsocketRails["MG-index"].trigger :new_game_added, [params[:game_id],current_user.name]
+    render nothing: true
   end
 
   def after_join_game
