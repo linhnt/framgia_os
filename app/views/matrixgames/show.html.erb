@@ -1,8 +1,8 @@
 <div id="__current_game" data-game="MG-<%= @matrixgame.id %>"></div>
-<div id="chat_content" style="margin: 5px;width: 880px;height: 120px;background-color: white;position: absolute;margin-top: 5px;padding: 5px;color: green;z-index: 1;overflow-y:scroll;"></div>
+<!-- <div id="chat_content" style="margin: 5px;width: 880px;height: 120px;background-color: white;position: absolute;margin-top: 5px;padding: 5px;color: green;z-index: 1;overflow-y:scroll;"></div> -->
 <div id="game_container" style="width: 900px;float: left"></div>
 <input type="text" id="chat_here" style="float: left;margin-left: 5px;margin-top: 5px;width: 795px;"/>
-<button type="button" id="chat_button" class="btn btn-success" style="float: left;margin-top: 5px;margin-left: 15px;">SEND</button>
+<!-- <button type="button" id="chat_button" class="btn btn-success" style="float: left;margin-top: 5px;margin-left: 15px;">SEND</button> -->
 <div style="clear: both;"></div>
 <% if @role == 1 %>
 <div id="start_game" style="display:none;margin-right:auto;margin-left:auto;text-align:center;background-color:green;color:white;width:200px;padding:10px;cursor:pointer;">START GAME</div>
@@ -49,22 +49,29 @@ var stage = new Kinetic.MatrixStage({
   width: STAGEWIDTH,
   height: STAGEHEIGHT
 });
+var backgroundImageLayer = new Kinetic.Layer();
 var backgroundLayer = new Kinetic.Layer();
 var nameLayer = new Kinetic.Layer();
 var numberLayer = new Kinetic.Layer();
 var pieceLayer = new Kinetic.Layer();
 var pointLayer = new Kinetic.Layer();
 //Draw background layer
-var background_rect = new Kinetic.Rect({
+var imageObj = new Image();
+imageObj.src = '/assets/matrix.jpg';
+imageObj.onload = function() {
+  var yoda = new Kinetic.Image({
   x: 0,
   y: 0,
+  image: imageObj,
   width: STAGEWIDTH,
-  height: STAGEHEIGHT,
-  fill: "green",
-  stroke: "black",
-  strokeWidth: 10
-});
-backgroundLayer.add(background_rect);
+  height: STAGEHEIGHT
+  });
+  backgroundImageLayer.add(yoda);
+  stage.add(backgroundImageLayer);
+  stage.add(backgroundLayer);
+  stage.add(numberLayer);
+  stage.add(pieceLayer);
+};
 
 // Draw tables
 var table_for_player1 = new Kinetic.Table({x:100,y:150,basesize:35});
@@ -73,21 +80,18 @@ backgroundLayer.add(table_for_player1);
 var table_for_player2 = new Kinetic.Table({x:485,y:150,basesize:35});
 table_for_player2.draw_table();
 backgroundLayer.add(table_for_player2);
-stage.add(backgroundLayer);
 
 // Init numberLayer
 var numbergroup1 = new Kinetic.NumberGroup({x:100,y:150,numberarray:gameArray1,basesize:35});
 var numbergroup2 = new Kinetic.NumberGroup({x:485,y:150,numberarray:gameArray2,basesize:35});
 numberLayer.add(numbergroup1);
 numberLayer.add(numbergroup2);
-stage.add(numberLayer);
 
 // Init pieceLayer
 var piecegroup1 = new Kinetic.PieceGroup({name:"piece",x:30,y:150,target_x:100,target_y:150,basesize:35,g_id:1,gamearray:gameArray1,numberGroup: numbergroup1,draggable: user1 ? true:false});
 var piecegroup2 = new Kinetic.PieceGroup({name:"piece",x:835,y:150,target_x:485,target_y:150,basesize:35,g_id:2,gamearray:gameArray2,numberGroup: numbergroup2,draggable: user2 ? true:false});
 pieceLayer.add(piecegroup1);
 pieceLayer.add(piecegroup2);
-stage.add(pieceLayer);
 
 //Init PointLayer
 var pointgroup1 = new Kinetic.PointGroup({x:100,y:150,point:0,basesize:35,gamearray:gameArray1});
@@ -139,15 +143,16 @@ stage.find(".piece").each(function(p){
 });
 
 function set_player(g_id,name){
-  xx = g_id==1 ? 100:485;
+  xx = g_id==1 ? 405:495;
   temp = new Kinetic.Text({
     x: xx,
-    y: 500,
+    y: 110,
     text: name,
-    fontSize: 27,
+    fontSize: 25,
     fontFamily: "Calibri",
     fill: "white"
   });
+  if (g_id==1) temp.offsetX(temp.width());
   nameLayer.add(temp);
   if(g_id==1){
     user1joined = true;
@@ -156,6 +161,7 @@ function set_player(g_id,name){
     user2joined = true;
     player2name = name;
   }
+  if (user2joined&&user1joined) next_turn();
   stage.redraw_layer(nameLayer);
 }
 

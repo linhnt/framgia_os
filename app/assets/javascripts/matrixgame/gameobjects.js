@@ -118,7 +118,9 @@
           y: size*i,
           width: size,
           height: size,
-          fill: this.attrs.g_id == 1 ? "red":"blue"
+          fill: "#336600",
+          stroke: "white",
+          opacity: 0.8
         }));
   　　　this.add(new Kinetic.Text({
           x: 12,
@@ -202,14 +204,17 @@
         }
       }
       // Draw point
-      this.add(new Kinetic.Text({
-        x: 0,
+      pText = new Kinetic.Text({
+        x: 157.5,
         y: 320,
-        text: "Point:"+this.attrs.point,
-        fontSize: 22,
+        text: this.attrs.point,
+        fontSize: 70,
         fontFamily: "Calibri",
-        fill: "white"
-      }));
+        fill: "white",
+        stroke: "white"
+      })
+      pText.offsetX(pText.width()/2);
+      this.add(pText);
     }
   };
   Kinetic.Util.extend(Kinetic.PointGroup, Kinetic.Group);
