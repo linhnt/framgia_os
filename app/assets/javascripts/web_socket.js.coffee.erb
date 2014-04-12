@@ -80,7 +80,8 @@ class Chat.Controller
     alert("Well done ^^")
 
   gameEndAll: (data) =>
-    $("#"+data).find(".gamedone").hide().html("終").show(1000)
+    str = "<a href='/show_matrixgames/"+data+"'><img alt='Info' src='/assets/info.png' width='25'></a>"
+    $("#"+data).find(".gamedone").hide().html(str).show(1000)
 
   updateScore: (data) =>
     $("#"+data[0]).find(".score1").hide().html(data[1]).show(1000)
