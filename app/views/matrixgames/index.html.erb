@@ -1,9 +1,10 @@
 <div id="__current_game" data-game="MG-index"></div>
 <img src="/assets/back1.jpg"></img>
 <h1> Please DO NOT play during WORKING time!</h1>
-<h3>Total completed games: <%= Matrixgame.total_completed_game %></h3>
+<h4><%= Matrixgame.user_static(current_user.id) %></h4>
 <hr>
-<h3>Best point in game: <%= Matrixgame.best_score.better_point %></h3>
+<h4>Total completed games: <%= Matrixgame.total_completed_game %></h4>
+<h4>Best point in game: <%= Matrixgame.best_score.better_point %></h4>
 <% g1=Matrixgame.best_score %>
 <div class="onegame">
   <div class="gamename">GAME ID: <%= g1.id %></div>
@@ -23,7 +24,7 @@
   </div>
 <div class="score2"><%= g1.user2_score %></div>
 </div>
-<h3>Best rate in game: <%= Matrixgame.best_rate.rate %></h3>
+<h4>Best rate in game: <%= Matrixgame.best_rate.rate %></h4>
 <% g2=Matrixgame.best_rate %>
 <div class="onegame">
   <div class="gamename">GAME ID: <%= g2.id %></div>
