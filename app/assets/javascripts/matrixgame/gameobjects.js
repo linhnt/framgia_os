@@ -119,8 +119,7 @@
           width: size,
           height: size,
           fill: "#336600",
-          stroke: "white",
-          opacity: 0.8
+          stroke: "white"
         }));
   　　　this.add(new Kinetic.Text({
           x: 12,
