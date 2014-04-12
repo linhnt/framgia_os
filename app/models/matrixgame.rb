@@ -9,6 +9,10 @@ class Matrixgame < ActiveRecord::Base
     rate = user1_score > user2_score ? user1_score.to_f/user2_score.to_f : user2_score.to_f/user1_score.to_f
     sprintf("%.2f", rate).to_f
   end
+
+  def is_recorded?
+    self.result1 && self.result2
+  end
   
   class << self
     def total_completed_game

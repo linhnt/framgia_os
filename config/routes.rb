@@ -19,6 +19,7 @@ FramgiaOs::Application.routes.draw do
   get "send_game_mess" => "matrixgames#send_game_mess"
   resources :framgiaers, only: [:index, :update]
   resources :matrixgames, only: [:index, :show, :create]
+  resources :show_matrixgames, only: [:show]
   resources :auto_orders, only: [:create, :destroy]
   resources :orders, only: [:create, :index, :destroy]
   resources :product_clicks, only: [:index, :update]

@@ -239,7 +239,9 @@ function call_set_game_end(){
     data: {
       game_id: <%= @matrixgame.id %>,
       user1_score: pointgroup1.attrs.point,
-      user2_score: pointgroup2.attrs.point
+      user2_score: pointgroup2.attrs.point,
+      user1_state: gen_state(gameArray1),
+      user2_state: gen_state(gameArray2)
     },
     url: "/set_game_end",
     success: function(data){      
@@ -262,6 +264,14 @@ function call_set_game_quit(){
     alert("Your friend quited!");
     window.location.href = "/matrixgames";
   }
+}
+
+function gen_state(arr){
+  mystring = "";
+  for (var i=2;i<=10;i++){
+    for (j=2;j<=10;j++) mystring += arr[i][j]+" ";
+  }
+  return mystring;
 }
 // GAME PROCESS
 var turn,array,p1done,p2done;

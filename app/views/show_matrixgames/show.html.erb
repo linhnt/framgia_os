@@ -1,0 +1,116 @@
+
+<div id="game_container" style="width: 900px;float: left"></div>
+<div style="clear: both;"></div>
+<%= javascript_include_tag "matrixgame/kinetic-v5.0.1.min" %>
+<%= javascript_include_tag "matrixgame/gameobjects" %>
+<script>
+  var STAGEWIDTH = 900;
+  var STAGEHEIGHT = 540;
+  var player1name = "<%= User.find(@matrixgame.user1_id).name %>";
+  var player2name = "<%= User.find(@matrixgame.user2_id).name %>";
+
+var gameArray1 = new Array;
+for (var i=0;i<=12;i++){
+  gameArray1[i]=new Array();
+  for (j=0;j<=12;j++) gameArray1[i][j]=-1;
+}
+var gameArray2 = new Array;
+for (var i=0;i<=12;i++){
+  gameArray2[i]=new Array();
+  for (j=0;j<=12;j++) gameArray2[i][j]=-1;
+}
+
+<% rarr1 = @matrixgame.result1.split(" ") %>
+<% count = 0 %>
+<% (2..10).each do |i| %>
+<%   (2..10).each do |j| %>
+  gameArray1[<%= i %>][<%= j %>]=<%= rarr1[count] %>;
+  <% count = count +1 %>
+<%   end %>
+<% end %>
+<% rarr2 = @matrixgame.result2.split(" ") %>
+<% count = 0 %>
+<% (2..10).each do |i| %>
+<%   (2..10).each do |j| %>
+  gameArray2[<%= i %>][<%= j %>]=<%= rarr2[count] %>;
+  <% count = count +1 %>
+<%   end %>
+<% end %>
+// Init stage, layers and varibles
+var stage = new Kinetic.MatrixStage({
+  container: "game_container",
+  width: STAGEWIDTH,
+  height: STAGEHEIGHT
+});
+var backgroundImageLayer = new Kinetic.Layer();
+var backgroundLayer = new Kinetic.Layer();
+var nameLayer = new Kinetic.Layer();
+var numberLayer = new Kinetic.Layer();
+var pointLayer = new Kinetic.Layer();
+//Draw background layer
+var imageObj = new Image();
+imageObj.src = '/assets/matrix.jpg';
+imageObj.onload = function() {
+  var yoda = new Kinetic.Image({
+  x: 0,
+  y: 0,
+  image: imageObj,
+  width: STAGEWIDTH,
+  height: STAGEHEIGHT
+  });
+  backgroundImageLayer.add(yoda);
+  stage.add(backgroundImageLayer);
+  stage.add(backgroundLayer);
+  set_player(1,player1name);
+  set_player(2,player2name);
+  stage.redraw_layer(nameLayer);
+  numbergroup1.draw_number();
+  numbergroup2.draw_number();
+  stage.redraw_layer(numberLayer);
+  pointgroup1.draw_point();
+  pointgroup2.draw_point();
+  stage.redraw_layer(pointLayer);
+};
+
+// Draw tables
+var table_for_player1 = new Kinetic.Table({x:100,y:150,basesize:35});
+table_for_player1.draw_table();
+backgroundLayer.add(table_for_player1);
+var table_for_player2 = new Kinetic.Table({x:485,y:150,basesize:35});
+table_for_player2.draw_table();
+backgroundLayer.add(table_for_player2);
+
+// Init numberLayer
+var numbergroup1 = new Kinetic.NumberGroup({x:100,y:150,numberarray:gameArray1,basesize:35});
+var numbergroup2 = new Kinetic.NumberGroup({x:485,y:150,numberarray:gameArray2,basesize:35});
+numberLayer.add(numbergroup1);
+numberLayer.add(numbergroup2);
+
+//Init PointLayer
+var pointgroup1 = new Kinetic.PointGroup({x:100,y:150,point:0,basesize:35,gamearray:gameArray1});
+var pointgroup2 = new Kinetic.PointGroup({x:485,y:150,point:0,basesize:35,gamearray:gameArray2});
+pointLayer.add(pointgroup1);
+pointLayer.add(pointgroup2);
+
+function set_player(g_id,name){
+  xx = g_id==1 ? 405:495;
+  temp = new Kinetic.Text({
+    x: xx,
+    y: 110,
+    text: name,
+    fontSize: 25,
+    fontFamily: "Calibri",
+    fill: "white"
+  });
+  if (g_id==1) temp.offsetX(temp.width());
+  nameLayer.add(temp);
+  if(g_id==1){
+    user1joined = true;
+    player1name = name;
+  }else{
+    user2joined = true;
+    player2name = name;
+  }
+  stage.redraw_layer(nameLayer);
+}
+</script>

@@ -65,9 +65,12 @@ class MatrixgamesController < ApplicationController
   end
 
   def set_game_end
+    binding.pry
     game = Matrixgame.find(params[:game_id].to_i)
     game.user1_score = params[:user1_score].to_i
     game.user2_score = params[:user2_score].to_i
+    game.result1 = params[:user1_state]
+    game.result2 = params[:user2_state]
     game.done = true
     game.save
     WebsocketRails["MG-#{params[:game_id]}"].trigger :game_end, params[:data]

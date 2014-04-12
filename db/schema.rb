@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140326122240) do
+ActiveRecord::Schema.define(version: 20140412021234) do
 
   create_table "auto_orders", force: true do |t|
     t.integer  "user_id"
@@ -54,6 +54,8 @@ ActiveRecord::Schema.define(version: 20140326122240) do
     t.integer  "user1_score"
     t.integer  "user2_score"
     t.boolean  "done",        default: false
+    t.string   "result1"
+    t.string   "result2"
   end
 
   create_table "orders", force: true do |t|
