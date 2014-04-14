@@ -14,6 +14,10 @@ class Matrixgame < ActiveRecord::Base
     self.result1 && self.result2
   end
   
+  def winner_id
+    user1_score > user2_score ? user1_id : user2_id
+  end
+
   class << self
     def user_static user_id
       games = where(done:true).where("user1_id=? or user2_id=?",user_id,user_id)
@@ -28,11 +32,11 @@ class Matrixgame < ActiveRecord::Base
     def total_completed_game
       where(done: true).count
     end
-    def best_score
-      where(done: true).sort{|g1,g2| g1.better_point <=> g2.user2_score}.last
+    def best_score_games
+      where(done: true).sort{|g1,g2| g2.better_point <=> g1.better_point}.first(10)
     end
-    def best_rate
-      where(done: true).sort{|g1,g2| g1.rate <=> g2.rate}.last
+    def best_rate_games
+      where(done: true).sort{|g1,g2| g2.rate <=> g1.rate}.first(10)
     end
     def clear_games
       where(done: false).where(visibility: true).each do |g|

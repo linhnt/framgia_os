@@ -26,13 +26,20 @@ class MatrixgamesController < ApplicationController
 
   def send_game_mess
     return if params[:chat_text] == ""
+    content = params[:chat_text].gsub("<script>","").gsub("</script>","");
     @matrixgame = Matrixgame.find params[:game_id].to_i
-    WebsocketRails["MG-#{@matrixgame.id}"].trigger :send_game_mess, "<b>#{params[:user_name]}</b>: #{params[:chat_text]}"
+    WebsocketRails["MG-#{@matrixgame.id}"].trigger :send_game_mess, "<b>#{params[:user_name]}</b>: #{content}"
     render nothing: true
   end
 
   def index
-    @matrixgames = Matrixgame.visible.default_sort
+    if params[:show_all]
+       @matrixgames = Matrixgame.visible.default_sort
+     else
+       @matrixgames = Matrixgame.visible.default_sort.first(5)
+     end
+     @best_score_games = Matrixgame.best_score_games()
+     @best_rate_games = Matrixgame.best_rate_games()
   end
 
   def show
@@ -65,7 +72,6 @@ class MatrixgamesController < ApplicationController
   end
 
   def set_game_end
-    binding.pry
     game = Matrixgame.find(params[:game_id].to_i)
     game.user1_score = params[:user1_score].to_i
     game.user2_score = params[:user2_score].to_i

@@ -1,49 +1,32 @@
 <div id="__current_game" data-game="MG-index"></div>
 <img src="/assets/back1.jpg"></img>
 <h1> Please DO NOT play during WORKING time!</h1>
-<h4><%= Matrixgame.user_static(current_user.id) %></h4>
-<hr>
 <h4>Total completed games: <%= Matrixgame.total_completed_game %></h4>
-<h4>Best point in game: <%= Matrixgame.best_score.better_point %></h4>
-<% g1=Matrixgame.best_score %>
+<h4><%= Matrixgame.user_static(current_user.id) %></h4>
+<div class="onegame" id="show_ranking">SHOW/HIDE RANKING</div>
+<div id="ranking" style="display: none;">
+<h3>TOP SCORE</h3>
+<% @best_score_games.each do |game| %>
 <div class="onegame">
-  <div class="gamename">GAME ID: <%= g1.id %></div>
-  <div class="p1">
-<%= User.find(g1.user1_id).name %>
-  </div>
-<div class="score1"><%= g1.user1_score %></div>
-<div class="gamedone">
-<% if g1.is_recorded? %>
-<%= link_to image_tag("/assets/info.png",width:25), show_matrixgame_path(g1.id) %>
-<% else %>
-終
+<div class="gamename">GAME ID: <%= game.id %></div>
+<%= "#{User.find(game.winner_id).name} - SCORE: #{game.better_point}" %>
+<% if game.is_recorded? %>
+<%= link_to image_tag("/assets/info.png",width:25), show_matrixgame_path(game.id) %>
 <% end %>
 </div>
-  <div class="p2">
-<%= User.find(g1.user2_id).name %>
-  </div>
-<div class="score2"><%= g1.user2_score %></div>
-</div>
-<h4>Best rate in game: <%= Matrixgame.best_rate.rate %></h4>
-<% g2=Matrixgame.best_rate %>
+<% end %>
+<h3>TOP RATE</h3>
+<% @best_rate_games.each do |game| %>
 <div class="onegame">
-  <div class="gamename">GAME ID: <%= g2.id %></div>
-  <div class="p1">
-<%= User.find(g2.user1_id).name %>
-  </div>
-<div class="score1"><%= g2.user1_score %></div>
-<div class="gamedone">
-<% if g2.is_recorded? %>
-<%= link_to image_tag("/assets/info.png",width:25), show_matrixgame_path(g2.id) %>
-<% else %>
-終
+<div class="gamename">GAME ID: <%= game.id %></div>
+<%= "#{User.find(game.winner_id).name} - RATE: #{game.rate}" %>
+<% if game.is_recorded? %>
+<%= link_to image_tag("/assets/info.png",width:25), show_matrixgame_path(game.id) %>
 <% end %>
 </div>
-  <div class="p2">
-<%= User.find(g2.user2_id).name %>
-  </div>
-<div class="score2"><%= g2.user2_score %></div>
+<% end %>
 </div>
+<hr>
 <%= form_tag("/matrixgames", id: :newgame, method: :post) do -%>
 <% end %>
 <div class = "onegame" id="addgame">+ add and join your game</div>
@@ -79,6 +62,15 @@
 </div>
 <% end %>
 </div>
+<% if params[:show_all] %>
+<%= link_to matrixgames_path() do %>
+<div class="onegame">BACK</div>
+<% end %>
+<% else %>
+<%= link_to matrixgames_path(show_all: true) do %>
+<div class="onegame">SHOW ALL GAMES</div>
+<% end %>
+<% end %>
 <style>
 .onegame{
   width: 940px;
@@ -136,6 +128,9 @@
 }
 </style>
 <script>
+$("#show_ranking").click(function(){
+  $("#ranking").toggle("fast");
+});
 $(".onegame").hover(
   function(){
     $(this).fadeTo("fast",0.8);
