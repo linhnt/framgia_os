@@ -38,8 +38,9 @@ class MatrixgamesController < ApplicationController
      else
        @matrixgames = Matrixgame.visible.default_sort.first(10)
      end
-     @best_score_games = Matrixgame.best_score_games()
-     @best_rate_games = Matrixgame.best_rate_games()
+     @best_score_games = Matrixgame.best_score_games
+     @best_rate_games = Matrixgame.best_rate_games
+     @best_rate_users = User.best_rate_users
   end
 
   def show

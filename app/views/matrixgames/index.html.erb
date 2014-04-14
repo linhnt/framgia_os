@@ -1,25 +1,32 @@
 <div id="__current_game" data-game="MG-index"></div>
 <img src="/assets/back1.jpg"></img>
 <h1> Please DO NOT play during WORKING time!</h1>
-<h4>Total completed games: <%= Matrixgame.total_completed_game %></h4>
-<h4><%= Matrixgame.user_static(current_user.id) %></h4>
+<h1>Total completed games: <%= Matrixgame.total_completed_game %></h1>
+<h4><%= "Your win rate: #{current_user.user_static}% (#{current_user.count_win_game} wins/#{current_user.count_game} games)" %></h4>
 <div class="onegame" id="show_ranking">SHOW/HIDE RANKING</div>
 <div id="ranking" style="display: none;">
-<h3>TOP SCORE</h3>
-<% @best_score_games.each do |game| %>
+<h3>TOP WIN</h3>
+<% @best_rate_users.each_with_index do |user,i| %>
 <div class="onegame">
-<div class="gamename">GAME ID: <%= game.id %></div>
-<%= "#{User.find(game.winner_id).name} - SCORE: #{game.better_point}" %>
+<div class="gamename">Number #<%= i+1 %></div>
+<%= "#{user.name} - #{user.user_static}% (#{user.count_win_game} wins/#{user.count_game} games)" %>
+</div>
+<% end %>
+<h3>TOP RATE IN GAME</h3>
+<% @best_rate_games.each_with_index do |game,i| %>
+<div class="onegame">
+<div class="gamename">Number #<%= i+1 %></div>
+<%= "#{User.find(game.winner_id).name} - RATE: #{game.rate}" %>
 <% if game.is_recorded? %>
 <%= link_to image_tag("/assets/info.png",width:25), show_matrixgame_path(game.id) %>
 <% end %>
 </div>
 <% end %>
-<h3>TOP RATE</h3>
-<% @best_rate_games.each do |game| %>
+<h3>TOP SCORE IN GAME</h3>
+<% @best_score_games.each_with_index do |game,i| %>
 <div class="onegame">
-<div class="gamename">GAME ID: <%= game.id %></div>
-<%= "#{User.find(game.winner_id).name} - RATE: #{game.rate}" %>
+<div class="gamename">Number #<%= i+1 %></div>
+<%= "#{User.find(game.winner_id).name} - SCORE: #{game.better_point}" %>
 <% if game.is_recorded? %>
 <%= link_to image_tag("/assets/info.png",width:25), show_matrixgame_path(game.id) %>
 <% end %>
