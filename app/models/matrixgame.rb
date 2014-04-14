@@ -18,6 +18,7 @@ class Matrixgame < ActiveRecord::Base
     def user_static user_id
       games = where(done:true).where("user1_id=? or user2_id=?",user_id,user_id)
       count = games.count
+      return "You are new member of Matrixgame! Welcome :)" if count == 0
       win = 0
       games.each do |game|
         win = win + 1 if (game.user1_id == user_id && game.user1_score > game.user2_score) || (game.user2_id == user_id && game.user2_score > game.user1_score)
