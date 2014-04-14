@@ -36,7 +36,7 @@ class MatrixgamesController < ApplicationController
     if params[:show_all]
        @matrixgames = Matrixgame.visible.default_sort
      else
-       @matrixgames = Matrixgame.visible.default_sort.first(5)
+       @matrixgames = Matrixgame.visible.default_sort.first(10)
      end
      @best_score_games = Matrixgame.best_score_games()
      @best_rate_games = Matrixgame.best_rate_games()
