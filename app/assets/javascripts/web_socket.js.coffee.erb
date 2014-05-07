@@ -47,9 +47,7 @@ class Chat.Controller
     $("#start_game").show()
 
   sendGameMess: (message) =>
-
-    $("#chat_content").html(message).fadeIn().delay(1000).fadeOut()
-    $("#chat_here").val("")
+    $("#chat_content").hide().html(message).fadeIn().delay(1000).fadeOut()
 
   channelMessageall: (message) =>
     $("#"+message[0]).find(".p2").hide().html(message[1]).show(1000);

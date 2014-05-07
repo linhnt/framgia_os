@@ -5,7 +5,7 @@
 <h4><%= "Your win rate: #{current_user.user_static}% (#{current_user.count_win_game} wins/#{current_user.count_game} games)" %></h4>
 <div class="onegame" id="show_ranking">SHOW/HIDE RANKING</div>
 <div id="ranking" style="display: none;">
-<h3>TOP WIN</h3>
+<h3>TOP WIN(Just for users who played more than 20 games)</h3>
 <% @best_rate_users.each_with_index do |user,i| %>
 <div class="onegame">
 <div class="gamename">Number #<%= i+1 %></div>

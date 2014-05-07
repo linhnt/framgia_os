@@ -325,6 +325,7 @@ function send_mess(){
     success: function(data){
     }
   });
+  $("#chat_here").val("");
 }
 $("#chat_here").keyup(function(e){
   if(e.keyCode == 13){

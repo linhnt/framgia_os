@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
 
   class << self
     def best_rate_users
-      all.sort{|u1,u2| u2.user_static <=> u1.user_static}.first(8)
+      all.reject{|x| x.count_game<20}.sort{|u1,u2| u2.user_static <=> u1.user_static}.first(8)
     end
     def check_user data
       unless user = User.where(facebook_id: data["id"]).first
